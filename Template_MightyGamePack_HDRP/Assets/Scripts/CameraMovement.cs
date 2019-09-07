@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
+    public float rotationSpeed = 3.0f;
     public GameObject[] playerObjects;
     Transform[] players;
-    public float horizontalPanning = 1.0f;
-    public float verticalPanning = 1.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -33,14 +32,14 @@ public class CameraMovement : MonoBehaviour
             return;
         Vector3 midPoint = new Vector3(0.0f, 0.0f, 0.0f);
         // find a middlepoint between two players and look at it with some angle
-        for(int i = 0; i < players.Length; ++i)
+        for (int i = 0; i < players.Length; ++i)
         {
             midPoint += players[i].transform.position;
         }
         midPoint /= players.Length;
-        // add special panning (some randomness)
-
-        transform.LookAt(midPoint);
+        var step = rotationSpeed * Time.deltaTime;
+        Vector3 relativePosition = midPoint - transform.position;
+        Quaternion rotation = Quaternion.LookRotation(relativePosition, Vector3.up);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, step);
     }
-
 }

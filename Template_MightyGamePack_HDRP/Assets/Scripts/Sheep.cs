@@ -14,8 +14,8 @@ public class Sheep : MonoBehaviour
     [ReadOnly] public float sheepStrength = 1;
     public float feedSpeed = 0.35f;
 
-    Quaternion startBackOnFoursAngle;
-    Quaternion finalBackOnFoursAngle;
+    Quaternion startBackOnFoursAngle = Quaternion.identity;
+    Quaternion finalBackOnFoursAngle = Quaternion.identity;
     bool backOnFoursLerp;
 
 

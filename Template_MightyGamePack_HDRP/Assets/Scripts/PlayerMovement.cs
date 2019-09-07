@@ -1,4 +1,4 @@
-﻿using MightyGamePack;
+using MightyGamePack;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,6 +85,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Move() //Interpreting player controllers input
     {
+
         if (playerNumber == 1)
         {
             movementDirection = new Vector3(Input.GetAxis("Controller1 Left Stick Horizontal"), 0, -Input.GetAxis("Controller1 Left Stick Vertical")) * movementSpeed;
@@ -118,7 +119,6 @@ public class PlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
 
         }
-
     }
 
     public void Shout()
@@ -182,7 +182,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
  
-    private void ShoutImpl()
+   private void ShoutImpl()
     {
         //for now just react for every object in collision regardless of distance from source
         //TODO: add cooldown
