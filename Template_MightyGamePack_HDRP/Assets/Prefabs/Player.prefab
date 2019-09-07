@@ -5045,8 +5045,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 1
-  baseMoveSpeed: 3
-  stoppingSpeed: 0.5
+  baseMoveSpeed: 10
+  stoppingSpeed: 3
   shoutStrength: 20
   directionAngle: 0.7
   shoutCooldown: 1

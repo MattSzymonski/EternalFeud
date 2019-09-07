@@ -111,10 +111,10 @@ public class PlayerMovement : MonoBehaviour
 
             if (!knockbacked)
             {
-                if (Input.GetAxis("Controller1 Left Stick Horizontal") < 0 ) { moveDirection.z = 1; }
-                else if(Input.GetAxis("Controller1 Left Stick Horizontal") > 0 ){ moveDirection.z = -1; }
-                if (Input.GetAxis("Controller1 Left Stick Vertical") < 0 ) { moveDirection.x = 1; }
-                else if(Input.GetAxis("Controller1 Left Stick Vertical") > 0 ) { moveDirection.x = -1; }
+                if (Input.GetAxis("Controller1 Left Stick Horizontal") < 0 ) { moveDirection.x = -1; }
+                else if(Input.GetAxis("Controller1 Left Stick Horizontal") > 0 ){ moveDirection.x = 1; }
+                if (Input.GetAxis("Controller1 Left Stick Vertical") < 0 ) { moveDirection.z = 1; }
+                else if(Input.GetAxis("Controller1 Left Stick Vertical") > 0 ) { moveDirection.z = -1; }
             }
            // Debug.Log("direction x: " + moveDirection.x +  "direction z: " + moveDirection.z);
         }
@@ -125,10 +125,10 @@ public class PlayerMovement : MonoBehaviour
 
             if (!knockbacked)
             {
-                if (Input.GetAxis("Controller2 Left Stick Horizontal") < 0) { moveDirection.z = 1; }
-                else if (Input.GetAxis("Controller2 Left Stick Horizontal") > 0) { moveDirection.z = -1; }
-                if (Input.GetAxis("Controller2 Left Stick Vertical") < 0) { moveDirection.x = 1; }
-                else if (Input.GetAxis("Controller2 Left Stick Vertical") > 0) { moveDirection.x = -1; }
+                if (Input.GetAxis("Controller2 Left Stick Horizontal") < 0) { moveDirection.x = -1; }
+                else if (Input.GetAxis("Controller2 Left Stick Horizontal") > 0) { moveDirection.x = 1; }
+                if (Input.GetAxis("Controller2 Left Stick Vertical") < 0) { moveDirection.z = 1; }
+                else if (Input.GetAxis("Controller2 Left Stick Vertical") > 0) { moveDirection.z = -1; }
             }
         }
 
@@ -285,7 +285,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 boxBounds = transform.localScale * 4.0f;
         foreach (var obj in Physics.OverlapBox(shoutArea.transform.position, boxBounds / 2.0f, transform.rotation)) //slightly bigger than current gizmo, when tweaking remember to tweak corresponding gizmo
         {
-            if (obj.tag == "Player") continue; // for now ignore shouting at other player
+            if (obj.tag != "Sheep") continue; // shout only at sheep
             Vector3 direction = transform.rotation * Vector3.forward;
             direction.y = directionAngle;
 
