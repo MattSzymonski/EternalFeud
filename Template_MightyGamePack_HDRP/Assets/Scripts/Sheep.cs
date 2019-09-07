@@ -20,10 +20,7 @@ public class Sheep : MonoBehaviour
     void CheckTerritory()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, colliderDetectRadius);
-
-       
-
-        for (int i = 0; i < hitColliders.Length; i++)
+        for (int i = 0; i < hitColliders.Length; ++i)
         {
 
 
@@ -40,7 +37,6 @@ public class Sheep : MonoBehaviour
             else
             {
                 territory = 0;
-                return;
             }
         }
     }
