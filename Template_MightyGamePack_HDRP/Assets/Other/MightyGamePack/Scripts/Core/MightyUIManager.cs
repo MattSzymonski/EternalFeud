@@ -444,8 +444,12 @@ namespace MightyGamePack
 
         void UpdateSpriteCursor()
         {
-            spriteCustomCursorObject.transform.localPosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1));
-            spriteCustomCursorObject.transform.forward = Camera.main.transform.forward;
+            if (spriteCustomCursor)
+            {
+                spriteCustomCursorObject.transform.localPosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1));
+                spriteCustomCursorObject.transform.forward = Camera.main.transform.forward;
+            }
+           
         }
 
         void AnimateMenuCamera()

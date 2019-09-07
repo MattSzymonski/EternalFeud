@@ -113,6 +113,37 @@ namespace MightyGamePack
         public float score;
         //Add here more project related stuff
 
+        public List<Sheep> sheeps;
+        public List<GameObject> sheepSpawnerPlayer1;
+        public List<GameObject> sheepSpawnerPlayer2;
+
+
+        [ReadOnly]
+        public float sheepSpawnTimer = 0;
+      
+        [Range(0.01f, 0.90f)]
+        public float sheepSpawnRate = 1.0f;
+
+        public GameObject sheepPrefabPlayer1;
+        public GameObject sheepPrefabPlayer2;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         void Awake()
         {
@@ -128,6 +159,15 @@ namespace MightyGamePack
                 UIManager.enabled = false;
                 UIGameobject.SetActive(false);
             }
+
+
+
+            for (int i = sheeps.Count; i-- > 0;)
+            {
+               
+            }
+
+
         }
 
         void Start()
@@ -145,6 +185,9 @@ namespace MightyGamePack
             {
                 //score += Time.unscaledDeltaTime;
                 //UIManager.SetInGameScore(Mathf.Round(score)); //In seconds
+
+
+                SpawnSheeps();
             }
 
             if (UIManager.spriteCustomCursor)
@@ -155,15 +198,48 @@ namespace MightyGamePack
                     UIManager.SpriteCustomCursorClickPlayParticleSystem();
                 }
             }
+
+
+
+            
         }
 
 
 
 
+        //---------------------------------------------GAME MECHANICS FUNCTIONS---------------------------------------------
 
 
+        void SpawnSheeps()
+        {
+            if (sheepSpawnTimer < 1 - sheepSpawnRate)
+            {
+                sheepSpawnTimer += 1 * Time.fixedDeltaTime;
+            }
+            else
+            {
+                Invoke("SpawnSheep", Random.Range(0.0f, 0.75f));
+                sheepSpawnTimer = 0;
+            }
+        }
 
-
+        void SpawnSheep()
+        {
+            if(Random.Range(0,2) == 0) //Spawn for player 1
+            {
+                Vector2 point = Random.insideUnitCircle * 3;
+                Vector3 position = sheepSpawnerPlayer1[Random.Range(0, sheepSpawnerPlayer1.Count)].transform.position;
+                GameObject newSheep = Instantiate(sheepPrefabPlayer1, new Vector3(position.x + point.x, position.y, position.z + point.y), Quaternion.identity) as GameObject;
+                sheeps.Add(newSheep.GetComponent<Sheep>());
+            }
+            else //Spawn for player 2
+            {
+                Vector2 point = Random.insideUnitCircle * 3;
+                Vector3 position = sheepSpawnerPlayer1[Random.Range(0, sheepSpawnerPlayer2.Count)].transform.position;
+                GameObject newSheep = Instantiate(sheepPrefabPlayer2, new Vector3(position.x + point.x, position.y, position.z + point.y), Quaternion.identity) as GameObject;
+                sheeps.Add(newSheep.GetComponent<Sheep>());
+            }
+        }
 
 
 
@@ -225,5 +301,30 @@ namespace MightyGamePack
             gameState = value;
         }
 
-    }
+
+
+
+        void OnDrawGizmos()
+        {
+            for (int i = 0; i < sheepSpawnerPlayer1.Count; i++)
+            {
+                DebugExtension.DrawPoint(sheepSpawnerPlayer1[i].transform.position, Color.red, 1);
+                DebugExtension.DrawCircle(sheepSpawnerPlayer1[i].transform.position, Vector3.up, Color.red, 3);
+            }
+            for (int i = 0; i < sheepSpawnerPlayer2.Count; i++)
+            {
+                DebugExtension.DrawPoint(sheepSpawnerPlayer2[i].transform.position, Color.blue, 1);
+                DebugExtension.DrawCircle(sheepSpawnerPlayer2[i].transform.position, Vector3.up, Color.blue, 3);
+            }
+        }
+
+
+
+        }
+
+
+
+
+
+
 }
