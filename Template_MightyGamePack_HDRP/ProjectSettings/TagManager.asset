@@ -8,6 +8,7 @@ TagManager:
   - TerritoryPlayer1
   - TerritoryPlayer2
   - ShoutArea
+  - TerritoryNeutral
   layers:
   - Default
   - TransparentFX

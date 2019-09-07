@@ -115,6 +115,7 @@ namespace MightyGamePack
 
         public GameObject spawnerPlayer1;
         public GameObject spawnerPlayer2;
+        public float spawnerRadius = 1;
 
         //Add here more project related stuff xxD
         public bool spawnSheeps = true;
@@ -135,144 +136,13 @@ namespace MightyGamePack
         public List<GameObject> sheepSpawnerPlayer2;
 
         [ReadOnly] public float sheepSpawnTimer = 0;
-        [Range(0.0001f, 4.9f)] public float sheepSpawnRate = 1.0f;
+        [Range(0.0001f, 4.95f)] public float sheepSpawnRate = 1.0f;
 
         public GameObject sheepPrefabPlayer1;
         public GameObject sheepPrefabPlayer2;
 
         [ReadOnly] public int sheepDrownToSpawn = 0;
-
-        [Header("Sheeps update")]
-
-
-        [ReadOnly] public float allSheepsUpdateTimer = 0; //Counting to one (eg.) second, in this time all sheeps will be updated
-        public float allSheepsUpdateTime = 1.0f; //One second
-        [ReadOnly] public int sheepsToUpdateInCurrentCycle = 0;
-
-        float sheepUpdateTimer = 0;
-        [ReadOnly] public float sheepUpdatePeriod = 0;
-        [ReadOnly] public int sheepToUpdate = 0;
-
-        [HideInInspector] public bool cleanupSheepList;
-
-
-
-        bool cycleStarted = false;
-        int currentSheep = 0;
-
-
-        void UpdateSheep()
-        {
-            if (sheeps.Count > 0)
-            {
-              
-                if (allSheepsUpdateTimer < 1 / sheeps.Count) //One second
-                {
-                    allSheepsUpdateTimer += 1 * Time.deltaTime;
-                }
-                else
-                {
-                    Sheep currentlyUpdatedSheep = sheeps[currentSheep];
-                    currentlyUpdatedSheep.UpdateSheep();
-                    Debug.Log("Updating sheep " + currentlyUpdatedSheep);
-
-                    if (currentSheep < sheeps.Count - 1)
-                    {
-                        currentSheep++;
-                    }
-                    else
-                    {
-                        currentSheep = 0;
-                    }
-                }
-             }
-
-               
-
-
-
-
-
-            /*
-
-
-            if (sheeps.Count > 0)
-            {
-                if (allSheepsUpdateTimer < allSheepsUpdateTime) //One second
-                {
-                    allSheepsUpdateTimer += 1 * Time.deltaTime;
-                }
-                else
-                {
-                    if (cleanupSheepList) //Remove empty elements that remains after sheep death
-                    {
-                        for (int i = 0; i < sheeps.Count; i++)
-                        {
-                            if (sheeps[i] == null)
-                            {
-                                sheeps.RemoveAt(i);
-                            }
-                        }
-                        cleanupSheepList = false;
-                    }
-
-                    allSheepsUpdateTimer = 0;
-                    sheepsToUpdateInCurrentCycle = sheeps.Count;
-                    sheepUpdatePeriod = allSheepsUpdateTime / sheepsToUpdateInCurrentCycle;
-                    sheepToUpdate = sheeps.Count - 1;
-                    Debug.Log("NEXT CYCLE");
-                }
-
-
-                if (sheepUpdateTimer < sheepUpdatePeriod)
-                {
-                    sheepUpdateTimer += 1 * Time.deltaTime;
-                }
-                else
-                {
-                    if (sheepToUpdate > -1)
-                    {
-                      
-                   
-                    Sheep currentlyUpdatedSheep = sheeps[sheepToUpdate];
-                    currentlyUpdatedSheep.UpdateSheep();
-
-                    Debug.Log("Updating sheep " + currentlyUpdatedSheep);
-
-                    if (currentlyUpdatedSheep.owner == 1 && currentlyUpdatedSheep.territory == 2)
-                    {
-                        healthPlayer2--;
-                        return;
-                    }
-
-                    if (currentlyUpdatedSheep.owner == 2 && currentlyUpdatedSheep.territory == 1)
-                    {
-                        healthPlayer1--;
-                        return;
-                    }
-
-                    sheepToUpdate = sheepToUpdate - 1;
-                    sheepUpdateTimer = 0;
-                    }
-                    else
-                    {
-                       // allSheepsUpdateTimer = 0;
-                    }
-                }
-            }
-            */
-        }
-
-
-
-
-
-
-
-
-
-
-
+  
 
         void Awake()
         {
@@ -288,11 +158,6 @@ namespace MightyGamePack
                 UIManager.enabled = false;
                 UIGameobject.SetActive(false);
             }
-
-
-
-
-
         }
 
         void Start()
@@ -314,7 +179,6 @@ namespace MightyGamePack
                 //UIManager.SetInGameScore(Mathf.Round(score)); //In seconds
 
                 SpawnSheeps();
-                UpdateSheep();
 
                 healthPlayer1Slider.fillAmount = (healthPlayer1 / startHealthPlayer1) * 100;
                 healthPlayer2Slider.fillAmount = (healthPlayer2 / startHealthPlayer2) * 100;
@@ -338,9 +202,7 @@ namespace MightyGamePack
                     UIManager.SpriteCustomCursorClickPlayAnimation("Click");
                     UIManager.SpriteCustomCursorClickPlayParticleSystem();
                 }
-            }
-
-          
+            }          
 
 
         }
@@ -389,7 +251,7 @@ namespace MightyGamePack
             {
                 if (sheepSpawnerPlayer1.Count > 0 && spawnSheeps)
                 {
-                    Vector2 point = Random.insideUnitCircle * 3;
+                    Vector2 point = Random.insideUnitCircle * spawnerRadius;
                     Vector3 position = sheepSpawnerPlayer1[Random.Range(0, sheepSpawnerPlayer1.Count)].transform.position;
                     GameObject newSheep = Instantiate(sheepPrefabPlayer1, new Vector3(position.x + point.x, position.y, position.z + point.y), Quaternion.identity) as GameObject;
                     newSheep.name = "Sheep_" + sheeps.Count.ToString();
@@ -402,7 +264,7 @@ namespace MightyGamePack
             {
                 if(sheepSpawnerPlayer2.Count > 0 && spawnSheeps)
                 {
-                    Vector2 point = Random.insideUnitCircle * 3;
+                    Vector2 point = Random.insideUnitCircle * spawnerRadius;
                     Vector3 position = sheepSpawnerPlayer2[Random.Range(0, sheepSpawnerPlayer2.Count)].transform.position;
                     GameObject newSheep = Instantiate(sheepPrefabPlayer2, new Vector3(position.x + point.x, position.y, position.z + point.y), Quaternion.identity) as GameObject;
                     newSheep.GetComponent<Sheep>().owner = 2;
@@ -508,12 +370,12 @@ namespace MightyGamePack
             for (int i = 0; i < sheepSpawnerPlayer1.Count; i++)
             {
                 DebugExtension.DrawPoint(sheepSpawnerPlayer1[i].transform.position, Color.red, 1);
-                DebugExtension.DrawCircle(sheepSpawnerPlayer1[i].transform.position, Vector3.up, Color.red, 3);
+                DebugExtension.DrawCircle(sheepSpawnerPlayer1[i].transform.position, Vector3.up, Color.red, spawnerRadius);
             }
             for (int i = 0; i < sheepSpawnerPlayer2.Count; i++)
             {
                 DebugExtension.DrawPoint(sheepSpawnerPlayer2[i].transform.position, Color.blue, 1);
-                DebugExtension.DrawCircle(sheepSpawnerPlayer2[i].transform.position, Vector3.up, Color.blue, 3);
+                DebugExtension.DrawCircle(sheepSpawnerPlayer2[i].transform.position, Vector3.up, Color.blue, spawnerRadius);
             }
         }
 

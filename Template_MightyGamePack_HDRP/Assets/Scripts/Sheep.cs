@@ -10,9 +10,21 @@ public class Sheep : MonoBehaviour
     [ReadOnly] public int territory = 0; //0 - neutral, 1 - player1's, 2 - player2's S
     public float colliderDetectRadius = 1;
     public float drownHeightThreshold = -2;
+    public bool hideGizmos = false;
 
-    public Quaternion startBackOnFoursAngle;
+
+    Quaternion startBackOnFoursAngle;
+    Quaternion finalBackOnFoursAngle;
     bool backOnFoursLerp;
+
+
+    [Header("Sheeps update")]
+    [ReadOnly] public float sheepUpdateTimer = 0; //Counting to one (eg.) second, in this time all sheeps will be updated
+    public float sheepsUpdateTime = 1.0f; //One second
+
+    [Header("Sheeps back on fours")]
+    [ReadOnly] public float sheepBackOnFoursTimer = 0; //Counting to one (eg.) second, in this time all sheeps will be updated
+    public float sheepspBackOnFoursTime = 3.0f; //One second
 
 
     Rigidbody rb;
@@ -25,9 +37,22 @@ public class Sheep : MonoBehaviour
 
     private void Update()
     {
-
-        if(backOnFoursLerp)
+        if (sheepUpdateTimer < sheepsUpdateTime) //One second
         {
+            sheepUpdateTimer += 1 * Time.deltaTime;
+        }
+        else
+        {
+            CheckDrown();
+            CheckTerritory();
+            BackOnFours();
+            sheepUpdateTimer = 0;
+            DamageTerritory();
+        }
+
+        if (sheepBackOnFoursTimer < sheepspBackOnFoursTime) //One second
+        {
+            sheepBackOnFoursTimer += 1 * Time.deltaTime;
             BackOnFoursLerp();
         }
     }
@@ -35,27 +60,28 @@ public class Sheep : MonoBehaviour
     [Button]
     public void BackOnFours()
     {
-        if (transform.localEulerAngles.x > 30 || transform.localEulerAngles.x < -30 || transform.localEulerAngles.z > 30 || transform.localEulerAngles.z < -30)
+        if(sheepBackOnFoursTimer > sheepspBackOnFoursTime)
         {
-            startBackOnFoursAngle = transform.rotation;
-            
-            if (rb.velocity.magnitude < 0.01f)
+            if (transform.localEulerAngles.x > 40 || transform.localEulerAngles.x < -40 || transform.localEulerAngles.z > 40 || transform.localEulerAngles.z < -40)
             {
-                transform.position += new Vector3(0, 2, 0);
+                startBackOnFoursAngle = transform.rotation;
+                finalBackOnFoursAngle = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
+
+                if (rb.velocity.magnitude < 0.1f && rb.angularVelocity.magnitude < 0.1f)
+                {
+                    sheepBackOnFoursTimer = 0;
+                    transform.position += new Vector3(0, 1, 0);
+                }
+               
             }
-            
-            
-            backOnFoursLerp = true;
-
-
-           
-
         }
+       
     }
 
     void BackOnFoursLerp()
     {
-        transform.rotation = Quaternion.Lerp(startBackOnFoursAngle,Quaternion.EulerRotation(0,0,0) , Time.time * 0.4f);
+       // transform.position = Vector3.Lerp(transform.position, transform.position + new Vector3(0f,2.0f,0f), sheepBackOnFoursTimer * 2.5f);
+        transform.rotation = Quaternion.Lerp(startBackOnFoursAngle, finalBackOnFoursAngle, sheepBackOnFoursTimer * 1.5f);
     }
 
 
@@ -84,7 +110,7 @@ public class Sheep : MonoBehaviour
 
     void CheckDrown()
     {
-        if (transform.position.y < drownHeightThreshold)
+        if (transform.localPosition.y < drownHeightThreshold)
         {
             Die();
         }
@@ -92,34 +118,35 @@ public class Sheep : MonoBehaviour
 
     void Die()
     {
-        MightyGamePack.MightyGameManager.gameManager.sheepToUpdate--;
-        MightyGamePack.MightyGameManager.gameManager.cleanupSheepList = true;
         MightyGamePack.MightyGameManager.gameManager.sheepDrownToSpawn++;
         Destroy(gameObject);
     }
-
-    public void UpdateSheep()
+   
+    void DamageTerritory()
     {
-       // Debug.Log(transform.name);
-        CheckDrown();
-        CheckTerritory();
-        BackOnFours();
+        if (owner == 1 && territory == 2)
+        {
+            MightyGamePack.MightyGameManager.gameManager.healthPlayer2 -= 1;
+            return;
+        }
+
+        if (owner == 2 && territory == 1)
+        {
+            MightyGamePack.MightyGameManager.gameManager.healthPlayer1 -= 1;
+            return;
+        }
     }
 
-    /*
-   void StandUp()
-   {
 
-   }
-
-   */
-
-   
     void OnDrawGizmos()
     {
-        DebugExtension.DrawCircle(transform.position, Vector3.up, Color.yellow, colliderDetectRadius);
-        DebugExtension.DrawCircle(transform.position, Vector3.right, Color.yellow, colliderDetectRadius);
-        DebugExtension.DrawCircle(transform.position, Vector3.forward, Color.yellow, colliderDetectRadius);
+        if(!hideGizmos)
+        {
+            DebugExtension.DrawCircle(transform.position, Vector3.up, Color.yellow, colliderDetectRadius);
+            DebugExtension.DrawCircle(transform.position, Vector3.right, Color.yellow, colliderDetectRadius);
+            DebugExtension.DrawCircle(transform.position, Vector3.forward, Color.yellow, colliderDetectRadius);
+        }
+      
     }
     
 }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8608652335035410774}
   - component: {fileID: 8432090839474650910}
   m_Layer: 0
-  m_Name: Sheep
+  m_Name: SheepPlayer1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -105,7 +105,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 313561639180841053}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: b31f9704df6f8974fa2726c1a8c6e705, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -123,5 +123,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e8a928f4d7400045972d08b47f6ada0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  owner: 0
   territory: 0
   colliderDetectRadius: 1
+  drownHeightThreshold: -2
+  hideGizmos: 0
+  sheepUpdateTimer: 0
+  sheepsUpdateTime: 1
+  sheepBackOnFoursTimer: 0
+  sheepspBackOnFoursTime: 3
