@@ -13,8 +13,8 @@ public class Sheep : MonoBehaviour
     public bool hideGizmos = false;
 
 
-    Quaternion startBackOnFoursAngle;
-    Quaternion finalBackOnFoursAngle;
+    Quaternion startBackOnFoursAngle = Quaternion.identity;
+    Quaternion finalBackOnFoursAngle = Quaternion.identity;
     bool backOnFoursLerp;
 
 

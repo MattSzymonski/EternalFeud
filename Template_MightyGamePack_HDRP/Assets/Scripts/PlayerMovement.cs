@@ -207,7 +207,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         currentAngle = Mathf.Round(Mathf.Atan2(ZAxis, XAxis) * Mathf.Rad2Deg); //for now no drag applied
-        currentAngle += 180.0f;
+        currentAngle += 90.0f;
         if (currentAngle < 0) { currentAngle += 360f; } else if(currentAngle >= 360.0f) { currentAngle -= 360.0f; }
         transform.rotation = Quaternion.AngleAxis(currentAngle, Vector3.up);
     }
