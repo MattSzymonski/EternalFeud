@@ -9921,12 +9921,17 @@ PrefabInstance:
     - target: {fileID: 8938210575838136706, guid: 5ea751d8ebdf388488b9c7833674ca95,
         type: 3}
       propertyPath: shoutStrength
-      value: 2.5
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8938210575838136706, guid: 5ea751d8ebdf388488b9c7833674ca95,
         type: 3}
       propertyPath: directionAngle
       value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938210575838136706, guid: 5ea751d8ebdf388488b9c7833674ca95,
+        type: 3}
+      propertyPath: shoutCooldown
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8938210575308808448, guid: 5ea751d8ebdf388488b9c7833674ca95,
         type: 3}
