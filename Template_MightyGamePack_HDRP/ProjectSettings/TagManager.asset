@@ -5,7 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
-  - Seed
+  - TerritoryPlayer1
+  - TerritoryPlayer2
   layers:
   - Default
   - TransparentFX
@@ -16,9 +17,9 @@ TagManager:
   - 
   - 
   - PostProcessing
-  - 
-  - 
-  - 
+  - TerritoryPlayer1
+  - TerritoryPlayer2
+  - Sheep
   - 
   - 
   - 

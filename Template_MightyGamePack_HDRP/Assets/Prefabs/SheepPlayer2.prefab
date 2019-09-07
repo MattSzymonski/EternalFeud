@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 2046086320396305537}
   - component: {fileID: 8608652335035410729}
   - component: {fileID: 8608652335035410774}
+  - component: {fileID: 8432090839474650910}
   m_Layer: 0
-  m_Name: Sheep
+  m_Name: SheepPlayer2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4411d27fb64b3c542bb99b3bc074da14, type: 2}
+  - {fileID: 2100000, guid: e98560602b4fa7e40af1b2435679776c, type: 2}
   - {fileID: 2100000, guid: 6f146831ece7c9740a3ccbf2df2f6443, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -110,3 +111,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.8228536, y: 1.2417607, z: 0.96978855}
   m_Center: {x: 0.22091863, y: -0.074763, z: -0.008802161}
+--- !u!114 &8432090839474650910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 313561639180841053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e8a928f4d7400045972d08b47f6ada0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: 0
+  territory: 0
+  colliderDetectRadius: 1
+  drownHeightThreshold: -2

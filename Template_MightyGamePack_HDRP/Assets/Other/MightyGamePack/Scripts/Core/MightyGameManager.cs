@@ -111,28 +111,90 @@ namespace MightyGamePack
 
         [Header("Game")]
         public float score;
-        //Add here more project related stuff
+        //Add here more project related stuff xxD
+       
+
+        [ReadOnly] public int healthPlayer1 = 1000;
+        [ReadOnly] public int healthPlayer2 = 1000;
 
         public List<Sheep> sheeps;
         public List<GameObject> sheepSpawnerPlayer1;
         public List<GameObject> sheepSpawnerPlayer2;
 
-
-        [ReadOnly]
-        public float sheepSpawnTimer = 0;
-      
-        [Range(0.01f, 0.90f)]
-        public float sheepSpawnRate = 1.0f;
+        [ReadOnly] public float sheepSpawnTimer = 0;
+        [Range(0.0001f, 4.9f)] public float sheepSpawnRate = 1.0f;
 
         public GameObject sheepPrefabPlayer1;
         public GameObject sheepPrefabPlayer2;
 
 
+        
+
+        float allSheepsUpdateTimer = 0; //Counting to one (eg.) second, in this time all sheeps will be updated
+        public float allSheepsUpdateTime = 1.0f; //One second
+        int sheepsToUpdateInCurrentCycle = 0;
+
+        float sheepUpdateTimer = 0;
+        float sheepUpdatePeriod = 0;
+        [HideInInspector] public int sheepToUpdate = 0;
+
+        [HideInInspector] public bool cleanupSheepList;
+
+        void UpdateSheep()
+        {
+           
+            if (sheeps.Count > 0)
+            {
+                if (allSheepsUpdateTimer < allSheepsUpdateTime) //One second
+                {
+                    allSheepsUpdateTimer += 1 * Time.fixedDeltaTime;
+                }
+                else
+                {
+                    if (cleanupSheepList) //Remove empty elements that remains after sheep death
+                    {
+                        for (int i = 0; i < sheeps.Count; i++)
+                        {
+                            if (sheeps[i] == null)
+                            {
+                                sheeps.RemoveAt(i);
+                            }
+
+                        }
+                        cleanupSheepList = false;
+                    }
+
+                    allSheepsUpdateTimer = 0;
+                    sheepsToUpdateInCurrentCycle = sheeps.Count;
+                    sheepUpdatePeriod = allSheepsUpdateTime / sheepsToUpdateInCurrentCycle;
+                    sheepToUpdate = sheeps.Count - 1;
+                }
 
 
+                if (sheepUpdateTimer < sheepUpdatePeriod)
+                {
+                    sheepUpdateTimer += 1 * Time.fixedDeltaTime;
+                }
+                else
+                {
+                    Sheep currentlyUpdatedSheep = sheeps[sheepToUpdate];
+                    currentlyUpdatedSheep.UpdateSheep();
 
+                    if (currentlyUpdatedSheep.owner == 1 && currentlyUpdatedSheep.territory == 2)
+                    {
+                        healthPlayer2--;
+                        return;
+                    }
 
-
+                    if (currentlyUpdatedSheep.owner == 2 && currentlyUpdatedSheep.territory == 1)
+                    {
+                        healthPlayer1--;
+                    }
+                    sheepToUpdate = sheepToUpdate--;
+                    sheepUpdateTimer = 0;
+                }
+            }
+        }
 
 
 
@@ -186,8 +248,8 @@ namespace MightyGamePack
                 //score += Time.unscaledDeltaTime;
                 //UIManager.SetInGameScore(Mathf.Round(score)); //In seconds
 
-
                 SpawnSheeps();
+                UpdateSheep();
             }
 
             if (UIManager.spriteCustomCursor)
@@ -210,15 +272,19 @@ namespace MightyGamePack
         //---------------------------------------------GAME MECHANICS FUNCTIONS---------------------------------------------
 
 
+        
+
+
         void SpawnSheeps()
         {
-            if (sheepSpawnTimer < 1 - sheepSpawnRate)
+            if (sheepSpawnTimer < 5 - sheepSpawnRate)
             {
                 sheepSpawnTimer += 1 * Time.fixedDeltaTime;
             }
             else
             {
-                Invoke("SpawnSheep", Random.Range(0.0f, 0.75f));
+                SpawnSheep();
+                //Invoke("SpawnSheep", Random.Range(0.0f, 0.75f));
                 sheepSpawnTimer = 0;
             }
         }
@@ -227,17 +293,25 @@ namespace MightyGamePack
         {
             if(Random.Range(0,2) == 0) //Spawn for player 1
             {
-                Vector2 point = Random.insideUnitCircle * 3;
-                Vector3 position = sheepSpawnerPlayer1[Random.Range(0, sheepSpawnerPlayer1.Count)].transform.position;
-                GameObject newSheep = Instantiate(sheepPrefabPlayer1, new Vector3(position.x + point.x, position.y, position.z + point.y), Quaternion.identity) as GameObject;
-                sheeps.Add(newSheep.GetComponent<Sheep>());
+                if (sheepSpawnerPlayer1.Count > 0)
+                {
+                    Vector2 point = Random.insideUnitCircle * 3;
+                    Vector3 position = sheepSpawnerPlayer1[Random.Range(0, sheepSpawnerPlayer1.Count)].transform.position;
+                    GameObject newSheep = Instantiate(sheepPrefabPlayer1, new Vector3(position.x + point.x, position.y, position.z + point.y), Quaternion.identity) as GameObject;
+                    newSheep.GetComponent<Sheep>().owner = 1;
+                    sheeps.Add(newSheep.GetComponent<Sheep>());
+                }
             }
             else //Spawn for player 2
             {
-                Vector2 point = Random.insideUnitCircle * 3;
-                Vector3 position = sheepSpawnerPlayer1[Random.Range(0, sheepSpawnerPlayer2.Count)].transform.position;
-                GameObject newSheep = Instantiate(sheepPrefabPlayer2, new Vector3(position.x + point.x, position.y, position.z + point.y), Quaternion.identity) as GameObject;
-                sheeps.Add(newSheep.GetComponent<Sheep>());
+                if(sheepSpawnerPlayer2.Count > 0)
+                {
+                    Vector2 point = Random.insideUnitCircle * 3;
+                    Vector3 position = sheepSpawnerPlayer2[Random.Range(0, sheepSpawnerPlayer2.Count)].transform.position;
+                    GameObject newSheep = Instantiate(sheepPrefabPlayer2, new Vector3(position.x + point.x, position.y, position.z + point.y), Quaternion.identity) as GameObject;
+                    newSheep.GetComponent<Sheep>().owner = 2;
+                    sheeps.Add(newSheep.GetComponent<Sheep>());
+                }
             }
         }
 
