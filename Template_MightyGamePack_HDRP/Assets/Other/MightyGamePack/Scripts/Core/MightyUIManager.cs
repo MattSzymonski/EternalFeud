@@ -266,8 +266,8 @@ namespace MightyGamePack
                 inGameScoreAnimator = inGameScore.GetComponent<Animator>();
                 inGameScoreAnimator.SetBool("Opened", false);
 
-                inGameScoreText = inGameScore.transform.Find("Text").GetComponent<Text>();
-                inGameScoreGameOverMenuText = inGameScoreGameOverMenu.transform.Find("Text").GetComponent<Text>();
+               // inGameScoreText = inGameScore.transform.Find("Text").GetComponent<Text>();
+              //  inGameScoreGameOverMenuText = inGameScoreGameOverMenu.transform.Find("Text").GetComponent<Text>();
             }
 
             if (inGameScore && !gameManager.displayInGameScore)
@@ -397,12 +397,14 @@ namespace MightyGamePack
             }     
         }
 
-        public void SetInGameScore(float value)
+        public void SetInGameScore(string value)
         {
             if (gameManager.displayInGameScore && enabled)
             {
-                inGameScoreText.text = value.ToString();
-                inGameScoreGameOverMenuText.text = value.ToString();
+                // inGameScoreText.text = value.ToString();
+
+
+                inGameScoreGameOverMenuText.text = value;
             }
             else
             {

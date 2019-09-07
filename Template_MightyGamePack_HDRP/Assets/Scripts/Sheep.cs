@@ -11,19 +11,60 @@ public class Sheep : MonoBehaviour
     public float colliderDetectRadius = 1;
     public float drownHeightThreshold = -2;
 
+    public Quaternion startBackOnFoursAngle;
+    bool backOnFoursLerp;
+
+
+    Rigidbody rb;
+
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody>();
+    }
+
+
+    private void Update()
+    {
+
+        if(backOnFoursLerp)
+        {
+            BackOnFoursLerp();
+        }
+    }
+
+    [Button]
+    public void BackOnFours()
+    {
+        if (transform.localEulerAngles.x > 30 || transform.localEulerAngles.x < -30 || transform.localEulerAngles.z > 30 || transform.localEulerAngles.z < -30)
+        {
+            startBackOnFoursAngle = transform.rotation;
+            
+            if (rb.velocity.magnitude < 0.01f)
+            {
+                transform.position += new Vector3(0, 2, 0);
+            }
+            
+            
+            backOnFoursLerp = true;
+
+
+           
+
+        }
+    }
+
+    void BackOnFoursLerp()
+    {
+        transform.rotation = Quaternion.Lerp(startBackOnFoursAngle,Quaternion.EulerRotation(0,0,0) , Time.time * 0.4f);
     }
 
 
     void CheckTerritory()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, colliderDetectRadius);
+
         for (int i = 0; i < hitColliders.Length; ++i)
         {
-
-
             if(hitColliders[i].transform.tag == "TerritoryPlayer1")
             {
                 territory = 1;
@@ -53,14 +94,16 @@ public class Sheep : MonoBehaviour
     {
         MightyGamePack.MightyGameManager.gameManager.sheepToUpdate--;
         MightyGamePack.MightyGameManager.gameManager.cleanupSheepList = true;
+        MightyGamePack.MightyGameManager.gameManager.sheepDrownToSpawn++;
         Destroy(gameObject);
     }
 
     public void UpdateSheep()
     {
+       // Debug.Log(transform.name);
         CheckDrown();
         CheckTerritory();
-       
+        BackOnFours();
     }
 
     /*

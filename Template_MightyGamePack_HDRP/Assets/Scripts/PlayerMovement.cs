@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
     bool dodged;
 
     Animator anim;
-
+    public float drownHeightThreshold = -2;
 
     void Start()
     {
@@ -63,8 +63,27 @@ public class PlayerMovement : MonoBehaviour
          //   Dodge(); //Add later
             Rotation();
             Shout();
+            CheckDrown();
         }
     }
+
+    void CheckDrown()
+    {
+        if (transform.position.y < drownHeightThreshold)
+        {
+            if (playerNumber == 1)
+            {
+                MightyGameManager.gameManager.GameOver(2);
+            }
+            if (playerNumber == 2)
+            {
+                MightyGameManager.gameManager.GameOver(1);
+            }
+
+
+        }
+    }
+
 
 
     void Move() //Interpreting player controllers input
