@@ -298,7 +298,7 @@ namespace MightyGamePack
             if (!debugHideUI)
             {
                 UIManager.GameOver();
-            }
+            
 
             if(winner == 1)
             {
@@ -308,7 +308,7 @@ namespace MightyGamePack
             {
                 UIManager.SetInGameScore("Black player wins!");
             }
-
+            }
         }
 
         public void PauseGame()

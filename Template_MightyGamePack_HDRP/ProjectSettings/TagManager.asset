@@ -9,6 +9,7 @@ TagManager:
   - TerritoryPlayer2
   - ShoutArea
   - TerritoryNeutral
+  - Sheep
   layers:
   - Default
   - TransparentFX

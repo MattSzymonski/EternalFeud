@@ -5045,18 +5045,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 1
-  baseMoveSpeed: 3
-  stoppingSpeed: 0.5
-  shoutStrength: 20
+  shoutStrength: 100
   directionAngle: 0.7
-  shoutCooldown: 1
-  moving: 0
   halfExtentsOfShoutBox: 1
   movementSmoothing: 0.05
-  knockbacked: 0
-  dodgeDuration: 0
-  dodgeCooldown: 0
-  drownHeightThreshold: -2
+  drownHeightThreshold: -1
+  movementSpeed: 5
+  shoutTime: 1
+  readyToShout: 0
 --- !u!54 &8938210575838136711
 Rigidbody:
   m_ObjectHideFlags: 0

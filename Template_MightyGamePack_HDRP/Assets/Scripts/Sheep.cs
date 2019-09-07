@@ -11,7 +11,8 @@ public class Sheep : MonoBehaviour
     public float colliderDetectRadius = 1;
     public float drownHeightThreshold = -2;
     public bool hideGizmos = false;
-
+    [ReadOnly] public float sheepStrength = 1;
+    public float feedSpeed = 0.35f;
 
     Quaternion startBackOnFoursAngle;
     Quaternion finalBackOnFoursAngle;
@@ -48,6 +49,7 @@ public class Sheep : MonoBehaviour
             BackOnFours();
             sheepUpdateTimer = 0;
             DamageTerritory();
+            Feed();
         }
 
         if (sheepBackOnFoursTimer < sheepspBackOnFoursTime) //One second
@@ -131,17 +133,24 @@ public class Sheep : MonoBehaviour
     {
         if (owner == 1 && territory == 2)
         {
-            MightyGamePack.MightyGameManager.gameManager.healthPlayer2 -= 1;
+            MightyGamePack.MightyGameManager.gameManager.healthPlayer2 -= Mathf.FloorToInt(sheepStrength);
             return;
         }
 
         if (owner == 2 && territory == 1)
         {
-            MightyGamePack.MightyGameManager.gameManager.healthPlayer1 -= 1;
+            MightyGamePack.MightyGameManager.gameManager.healthPlayer1 -= Mathf.FloorToInt(sheepStrength);
             return;
         }
     }
 
+    void Feed()
+    {
+        if (territory == 3)
+        {
+            sheepStrength += feedSpeed;
+        }
+    }
 
     void OnDrawGizmos()
     {

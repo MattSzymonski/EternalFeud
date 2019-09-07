@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8432090839474650910}
   m_Layer: 0
   m_Name: SheepPlayer1
-  m_TagString: Untagged
+  m_TagString: Sheep
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -126,8 +126,10 @@ MonoBehaviour:
   owner: 0
   territory: 0
   colliderDetectRadius: 1
-  drownHeightThreshold: -2
+  drownHeightThreshold: -1
   hideGizmos: 0
+  sheepStrength: 1
+  feedSpeed: 0.35
   sheepUpdateTimer: 0
   sheepsUpdateTime: 1
   sheepBackOnFoursTimer: 0

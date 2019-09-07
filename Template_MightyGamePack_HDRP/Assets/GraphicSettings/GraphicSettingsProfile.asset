@@ -1,5 +1,68 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8389292876384932005
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaa3b8214f75b354e9ba2caadd022259, type: 3}
+  m_Name: DepthOfField
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  focusMode:
+    m_OverrideState: 1
+    m_Value: 2
+  focusDistance:
+    m_OverrideState: 0
+    m_Value: 10
+    min: 0.1
+  nearFocusStart:
+    m_OverrideState: 1
+    m_Value: 12.3
+    min: 0
+  nearFocusEnd:
+    m_OverrideState: 1
+    m_Value: 20.05
+    min: 0
+  farFocusStart:
+    m_OverrideState: 1
+    m_Value: 39.5
+    min: 0
+  farFocusEnd:
+    m_OverrideState: 1
+    m_Value: 109
+    min: 0
+  nearSampleCount:
+    m_OverrideState: 0
+    m_Value: 5
+    min: 3
+    max: 8
+  nearMaxBlur:
+    m_OverrideState: 0
+    m_Value: 4
+    min: 0
+    max: 8
+  farSampleCount:
+    m_OverrideState: 0
+    m_Value: 7
+    min: 3
+    max: 16
+  farMaxBlur:
+    m_OverrideState: 0
+    m_Value: 8
+    min: 0
+    max: 16
+  highQualityFiltering:
+    m_OverrideState: 0
+    m_Value: 1
+  resolution:
+    m_OverrideState: 0
+    m_Value: 2
 --- !u!114 &-5668449320996261846
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -28,17 +91,17 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.505
+    m_Value: 0.539
     min: 0
     max: 1
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.412
+    m_Value: 0.405
     min: 0.01
     max: 1
   roundness:
     m_OverrideState: 1
-    m_Value: 0.776
+    m_Value: 0.761
     min: 0
     max: 1
   rounded:
@@ -64,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ddcec8a8eb2d684d833ac8f5d26aebd, type: 3}
   m_Name: HDShadowSettings
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   maxShadowDistance:
     m_OverrideState: 0
@@ -108,7 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2150ee00179b2f4418ea8b21a7e98eea, type: 3}
   m_Name: ExponentialFog
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   colorMode:
     m_OverrideState: 0
@@ -165,7 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7593b3a9277ac4696b20006c21dde2, type: 3}
   m_Name: VisualEnvironment
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   skyType:
     m_OverrideState: 1
@@ -176,6 +239,36 @@ MonoBehaviour:
   fogType:
     m_OverrideState: 0
     m_Value: 2
+--- !u!114 &-2504500700747478733
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a6b00fcf518bb94a90b408492e07b44, type: 3}
+  m_Name: FilmGrain
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  type:
+    m_OverrideState: 1
+    m_Value: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.301
+    min: 0
+    max: 1
+  response:
+    m_OverrideState: 1
+    m_Value: 0.8
+    min: 0
+    max: 1
+  texture:
+    m_OverrideState: 0
+    m_Value: {fileID: 0}
 --- !u!114 &-215210585195951931
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -242,6 +335,8 @@ MonoBehaviour:
   - {fileID: 9010288108601031176}
   - {fileID: -215210585195951931}
   - {fileID: 2226072957996891167}
+  - {fileID: -8389292876384932005}
+  - {fileID: -2504500700747478733}
 --- !u!114 &897861302624185411
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -261,7 +356,7 @@ MonoBehaviour:
     m_Value: 0
   contrast:
     m_OverrideState: 1
-    m_Value: 10
+    m_Value: 2
     min: -100
     max: 100
   colorFilter:
@@ -277,7 +372,7 @@ MonoBehaviour:
     max: 180
   saturation:
     m_OverrideState: 1
-    m_Value: 25
+    m_Value: 5
     min: -100
     max: 100
 --- !u!114 &2226072957996891167
@@ -335,7 +430,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 1.37
+    m_Value: 2.44
     min: 0
     max: 4
   stepCount:
@@ -358,7 +453,7 @@ MonoBehaviour:
     max: 256
   directLightingStrength:
     m_OverrideState: 1
-    m_Value: 0.557
+    m_Value: 0.156
     min: 0
     max: 1
   enableRaytracing:
@@ -443,7 +538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da5ab44aadfb1804db5fd470983ac1b8, type: 3}
   m_Name: LiftGammaGain
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   lift:
     m_OverrideState: 1
@@ -473,7 +568,7 @@ MonoBehaviour:
     m_Value: {fileID: 0}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.057
+    m_Value: 0.068
     min: 0
     max: 1
   maxSamples:
