@@ -101,6 +101,11 @@ public class Sheep : MonoBehaviour
                 territory = 2;
                 return;
             }
+            else if (hitColliders[i].transform.tag == "TerritoryNeutral")
+            {
+                territory = 3;
+                return;
+            }
             else
             {
                 territory = 0;

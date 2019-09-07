@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 19266538}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.4790001, y: 1.03, z: 0}
+  m_LocalPosition: {x: 0, y: 1.03, z: 1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8938210575838136710}
@@ -788,7 +788,7 @@ ParticleSystem:
     radiusThickness: 1
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
-    m_Rotation: {x: 0, y: 90, z: 0}
+    m_Rotation: {x: 0, y: 0, z: 0}
     m_Scale: {x: 1, y: 1, z: 1}
     placementMode: 0
     m_MeshMaterialIndex: 0
@@ -4947,6 +4947,7 @@ GameObject:
   - component: {fileID: 8938210575838136707}
   - component: {fileID: 8938210575838136706}
   - component: {fileID: 8938210575838136711}
+  - component: {fileID: 1349232136}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -5044,15 +5045,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 1
-  baseMoveSpeed: 1
-  stoppingSpeed: 1
-  shoutStrength: 10
+  baseMoveSpeed: 3
+  stoppingSpeed: 0.5
+  shoutStrength: 20
+  directionAngle: 0.7
+  shoutCooldown: 1
   moving: 0
   halfExtentsOfShoutBox: 1
   movementSmoothing: 0.05
   knockbacked: 0
   dodgeDuration: 0
   dodgeCooldown: 0
+  drownHeightThreshold: -2
 --- !u!54 &8938210575838136711
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5069,3 +5073,54 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &1349232136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8938210575838136705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9f88ed3f8dcc364e85002b8ef02c682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animatedElement: 2
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.11744884
+      value: 0.9664483
+      inSlope: 1.1210327
+      outSlope: 1.1210327
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: -0.0047187805
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  animationDirectionMultiplier: {x: 0.1, y: 0.1, z: 0.1}
+  evaluationSpeed: 3
+  looping: 0
+  detectCollisions: 0
+  tagsToCollide: []
