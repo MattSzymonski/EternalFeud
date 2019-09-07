@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     public float baseMoveSpeed;
     public float stoppingSpeed;
     public float shoutStrength;
+    public float directionAngle;
     Vector3 moveDirection;
     float moveSpeed;
     public bool moving;
@@ -96,7 +97,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Move() //Interpreting player controllers input
     {
-        float moveSpeedRel = 1.0f;
+        float moveSpeedRel = 0.5f;
         if(playerNumber == 1)
         {
             if (Input.GetAxis("Controller1 Left Stick Horizontal") != 0 && Input.GetAxis("Controller1 Left Stick Vertical") != 0) { moveSpeedRel = moveSpeed * 0.7071f + dodgeMoveSpeed; } else { moveSpeedRel = moveSpeed + dodgeMoveSpeed; }
@@ -211,27 +212,49 @@ public class PlayerMovement : MonoBehaviour
         {
             if(Input.GetAxis("Controller1 Triggers") != 0)
             {
-                //for now just react for every object in collision regardless of distance from source
-        
-                foreach (var obj in Physics.OverlapBox(shoutArea.transform.position, transform.localScale * 2.0f, transform.rotation)) //slightly bigger than current gizmo, when tweaking remember to tweak corresponding gizmo
-                {
-                    if (obj.tag == "Player") continue;
-                    Vector3 direction = transform.rotation * Vector3.forward;
-                    Debug.Log(direction);
-                    Debug.Log(obj.ToString());
-                    obj.GetComponent<Rigidbody>().AddForce(direction * shoutStrength, ForceMode.Impulse);
-                }
-                Debug.Log("FUS RO DAH!!!!");
-                particles.Play();
+                ShoutImpl();
             }
         } else if(playerNumber == 2)
         {
             if (Input.GetAxis("Controller2 Triggers") != 0)
             {
-                Debug.Log("FUS RO DAH!!!!");
+                ShoutImpl();
             }
 
         }
+    }
+
+    private void ShoutImpl()
+    {
+        //for now just react for every object in collision regardless of distance from source
+
+        //TODO: add cooldown
+        // add reduction of power further from me
+        // ignore objects not in cone -> add additional box for objects close by
+        // add visual cue that it is ready
+        Vector3 boxBounds = transform.localScale * 4.0f;
+        foreach (var obj in Physics.OverlapBox(shoutArea.transform.position, boxBounds / 2.0f, transform.rotation)) //slightly bigger than current gizmo, when tweaking remember to tweak corresponding gizmo
+        {
+            if (obj.tag == "Player") continue; // for now ignore shouting at other player
+            Vector3 direction = transform.rotation * Vector3.forward;
+            direction.y = directionAngle;
+           // Debug.Log(direction);
+            //Debug.Log(obj.ToString());
+            //decrease perceived shout strength, when target is further from player
+
+            obj.GetComponent<Rigidbody>().AddForce(direction * shoutStrength, ForceMode.Impulse);
+            obj.GetComponent<Rigidbody>().AddTorque(GenerateRandomRotation() * 0.3f, ForceMode.Impulse);
+        }
+        Debug.Log("FUS RO DAH!!!!");
+        particles.Play();
+    }
+
+    private Vector3 GenerateRandomRotation()
+    {
+        int rotateX = Random.Range(0, 2);
+        int rotateY = Random.Range(0, 2);
+        int rotateZ = Random.Range(0, 2);
+        return new Vector3(rotateX, rotateY, rotateZ);
     }
 
     private void OnDrawGizmos()
