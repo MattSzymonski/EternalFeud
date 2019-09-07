@@ -1,6 +1,7 @@
 ﻿using MightyGamePack;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -9,20 +10,22 @@ public class PlayerMovement : MonoBehaviour
     MightyGameManager gameManager;
 
     Rigidbody rb;
-    Transform headTransform;
     ParticleSystem particles;
+    Transform shoutArea;
 
     //-------Movement--------//
     [Header("Settings")]
     public int playerNumber;
     public float baseMoveSpeed;
     public float stoppingSpeed;
+    public float shoutStrength;
     Vector3 moveDirection;
     float moveSpeed;
     public bool moving;
     bool movingInput;
     bool rotatingInput;
     Vector3 velocity = Vector3.zero;
+    public float halfExtentsOfShoutBox = 1.0f;
     [Range(0, .3f)]
     public float movementSmoothing = 0.05f;
 
@@ -44,15 +47,19 @@ public class PlayerMovement : MonoBehaviour
 
     Animator anim;
 
+    private float currentAngle;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        headTransform = gameObject.transform.GetChild(0).GetComponent<Transform>();
         particles = GetComponentInChildren<ParticleSystem>();
+        shoutArea = GetComponentsInChildren<Transform>().Where(col => col.tag == "ShoutArea").SingleOrDefault();
         moveSpeed = baseMoveSpeed;
         gameManager = GameObject.Find("GameManager").GetComponent<MightyGameManager>();
         anim = GetComponentInChildren<Animator>();
+        Vector3 shoutPosition = shoutArea.transform.position;
+        shoutPosition.z += 2.5f; //for now just twice wide as player
+        shoutArea.transform.position = shoutPosition;
     }
 
     void Update()
@@ -77,10 +84,10 @@ public class PlayerMovement : MonoBehaviour
 
             if (!knockbacked)
             {
-                if (Input.GetAxis("Controller1 Left Stick Horizontal") < 0 ) { moveDirection.x = -1; }
-                else if(Input.GetAxis("Controller1 Left Stick Horizontal") > 0 ){ moveDirection.x = 1; }
-                if (Input.GetAxis("Controller1 Left Stick Vertical") < 0 ) { moveDirection.z = 1; }
-                else if(Input.GetAxis("Controller1 Left Stick Vertical") > 0 ) { moveDirection.z = -1; }
+                if (Input.GetAxis("Controller1 Left Stick Horizontal") < 0 ) { moveDirection.z = 1; }
+                else if(Input.GetAxis("Controller1 Left Stick Horizontal") > 0 ){ moveDirection.z = -1; }
+                if (Input.GetAxis("Controller1 Left Stick Vertical") < 0 ) { moveDirection.x = 1; }
+                else if(Input.GetAxis("Controller1 Left Stick Vertical") > 0 ) { moveDirection.x = -1; }
             }
            // Debug.Log("direction x: " + moveDirection.x +  "direction z: " + moveDirection.z);
         }
@@ -91,10 +98,10 @@ public class PlayerMovement : MonoBehaviour
 
             if (!knockbacked)
             {
-                if (Input.GetAxis("Controller2 Left Stick Horizontal") < 0) { moveDirection.x = -1; }
-                else if (Input.GetAxis("Controller2 Left Stick Horizontal") > 0) { moveDirection.x = 1; }
-                if (Input.GetAxis("Controller2 Left Stick Vertical") < 0) { moveDirection.z = 1; }
-                else if (Input.GetAxis("Controller2 Left Stick Vertical") > 0) { moveDirection.z = -1; }
+                if (Input.GetAxis("Controller2 Left Stick Horizontal") < 0) { moveDirection.z = 1; }
+                else if (Input.GetAxis("Controller2 Left Stick Horizontal") > 0) { moveDirection.z = -1; }
+                if (Input.GetAxis("Controller2 Left Stick Vertical") < 0) { moveDirection.x = 1; }
+                else if (Input.GetAxis("Controller2 Left Stick Vertical") > 0) { moveDirection.x = -1; }
             }
         }
 
@@ -153,29 +160,29 @@ public class PlayerMovement : MonoBehaviour
 
     void Rotation() // Calculating angle between player joystick right stick declension
     {
-        float XAxis = 0, YAxis = 0, angle = 0;
+        float XAxis = 0, ZAxis = 0;
         if(playerNumber == 1)
         {
             if (Input.GetAxis("Controller1 Right Stick Horizontal") != 0 || Input.GetAxis("Controller1 Right Stick Vertical") != 0) { rotatingInput = true; } else { rotatingInput = false; }
             if (rotatingInput)
             {
-                XAxis = Input.GetAxis("Controller1 Right Stick Horizontal");
-                YAxis = Input.GetAxis("Controller1 Right Stick Vertical");
+                ZAxis = Input.GetAxis("Controller1 Right Stick Horizontal");
+                XAxis = Input.GetAxis("Controller1 Right Stick Vertical");
             }
         } else if(playerNumber == 2)
         {
             if (Input.GetAxis("Controller2 Right Stick Horizontal") != 0 || Input.GetAxis("Controller2 Right Stick Vertical") != 0) { rotatingInput = true; } else { rotatingInput = false; }
             if (rotatingInput)
             {
-                XAxis = Input.GetAxis("Controller2 Right Stick Horizontal");
-                YAxis = Input.GetAxis("Controller2 Right Stick Vertical");
+                ZAxis = Input.GetAxis("Controller2 Right Stick Horizontal");
+                XAxis = Input.GetAxis("Controller2 Right Stick Vertical");
             }
         }
 
-
-        angle = Mathf.Round(Mathf.Atan2(XAxis, YAxis) * Mathf.Rad2Deg); //for now no drag applied
-        if (angle < 0) { angle += 360f; }
-        headTransform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+        currentAngle = Mathf.Round(Mathf.Atan2(ZAxis, XAxis) * Mathf.Rad2Deg); //for now no drag applied
+        currentAngle += 180.0f;
+        if (currentAngle < 0) { currentAngle += 360f; } else if(currentAngle >= 360.0f) { currentAngle -= 360.0f; }
+        transform.rotation = Quaternion.AngleAxis(currentAngle, Vector3.up);
     }
 
     public void Shout()
@@ -184,6 +191,16 @@ public class PlayerMovement : MonoBehaviour
         {
             if(Input.GetAxis("Controller1 Triggers") != 0)
             {
+                //for now just react for every object in collision regardless of distance from source
+        
+                foreach (var obj in Physics.OverlapBox(shoutArea.transform.position, transform.localScale * 2.0f, transform.rotation)) //slightly bigger than current gizmo, when tweaking remember to tweak corresponding gizmo
+                {
+                    if (obj.tag == "Player") continue;
+                    Vector3 direction = transform.rotation * Vector3.forward;
+                    Debug.Log(direction);
+                    Debug.Log(obj.ToString());
+                    obj.GetComponent<Rigidbody>().AddForce(direction * shoutStrength, ForceMode.Impulse);
+                }
                 Debug.Log("FUS RO DAH!!!!");
                 particles.Play();
             }
@@ -195,5 +212,12 @@ public class PlayerMovement : MonoBehaviour
             }
 
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!shoutArea) return;
+        Gizmos.matrix = Matrix4x4.TRS(shoutArea.transform.position, transform.rotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, transform.localScale * 4);
     }
 }

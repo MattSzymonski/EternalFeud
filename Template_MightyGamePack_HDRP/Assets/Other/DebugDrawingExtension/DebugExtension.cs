@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Reflection;
+using System;
 
 
 // Debug Extension
@@ -252,26 +253,25 @@ public static class DebugExtension
 		Debug.DrawLine(lbf, luf, color, duration, depthTest);
 		Debug.DrawLine(rbf, ruf, color, duration, depthTest);
 	}
-	
-	
-	// 	- Debugs a local cube.
-	
-	// <param name='space'>
-	// 	- The space the cube will be local to.
-	// </param>
-	// <param name='size'>
-	//		- The size of the cube.
-	// </param>
-	// <param name='center'>
-	// 	- The position (relative to transform) where the cube will be debugged.
-	// </param>
-	// <param name='duration'>
-	// 	- How long to draw the cube.
-	// </param>
-	// <param name='depthTest'>
-	// 	- Whether or not the cube should be faded when behind other objects.
-	// </param>
-	public static void DebugLocalCube(Matrix4x4 space, Vector3 size, Vector3 center = default(Vector3), float duration = 0, bool depthTest = true)
+
+    // 	- Debugs a local cube.
+
+    // <param name='space'>
+    // 	- The space the cube will be local to.
+    // </param>
+    // <param name='size'>
+    //		- The size of the cube.
+    // </param>
+    // <param name='center'>
+    // 	- The position (relative to transform) where the cube will be debugged.
+    // </param>
+    // <param name='duration'>
+    // 	- How long to draw the cube.
+    // </param>
+    // <param name='depthTest'>
+    // 	- Whether or not the cube should be faded when behind other objects.
+    // </param>
+    public static void DebugLocalCube(Matrix4x4 space, Vector3 size, Vector3 center = default(Vector3), float duration = 0, bool depthTest = true)
 	{
 		DebugLocalCube(space, size, Color.white, center, duration, depthTest);
 	}
