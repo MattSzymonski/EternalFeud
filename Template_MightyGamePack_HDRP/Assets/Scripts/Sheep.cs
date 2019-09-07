@@ -24,7 +24,7 @@ public class Sheep : MonoBehaviour
     public void CheckTerritory()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, colliderDetectRadius);
-        for (int i = 0; i < hitColliders.Length; i++)
+        for (int i = 0; i < hitColliders.Length; ++i)
         {
             if(hitColliders[i].transform.tag == "TerritoryPlayer1")
             {
@@ -39,7 +39,6 @@ public class Sheep : MonoBehaviour
             else
             {
                 territory = 0;
-                return;
             }
         }
     }
