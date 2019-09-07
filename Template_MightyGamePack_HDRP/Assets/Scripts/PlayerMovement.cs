@@ -231,7 +231,7 @@ public class PlayerMovement : MonoBehaviour
                 //can tweak later
                 shoutTimeAccumulate = 0.0f;
                 shownVisualCue = false;
-            }
+            }   
         } else if(playerNumber == 2)
         {
             if (Input.GetAxis("Controller2 Triggers") != 0)
@@ -256,6 +256,7 @@ public class PlayerMovement : MonoBehaviour
     public void Restart()
     {
         shoutReady = false;
+        shownVisualCue = false;
         shoutTimeAccumulate = 0.0f;
     }
 
