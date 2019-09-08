@@ -148,8 +148,12 @@ public class Sheep : MonoBehaviour
     {
         if (territory == 3)
         {
-            sheepStrength += feedSpeed;
+            if(sheepStrength < 3)
+            {
+                sheepStrength += feedSpeed;
+            }          
         }
+        if (sheepStrength > 1) { transform.localScale = Vector3.one + new Vector3(sheepStrength, sheepStrength, sheepStrength) / 3; }
     }
 
     void OnDrawGizmos()

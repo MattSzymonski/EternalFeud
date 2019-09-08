@@ -23,11 +23,11 @@ MonoBehaviour:
     min: 0.1
   nearFocusStart:
     m_OverrideState: 1
-    m_Value: 12.3
+    m_Value: 2.9
     min: 0
   nearFocusEnd:
     m_OverrideState: 1
-    m_Value: 20.05
+    m_Value: 19.7
     min: 0
   farFocusStart:
     m_OverrideState: 1
@@ -35,7 +35,7 @@ MonoBehaviour:
     min: 0
   farFocusEnd:
     m_OverrideState: 1
-    m_Value: 109
+    m_Value: 429.2
     min: 0
   nearSampleCount:
     m_OverrideState: 0
@@ -91,7 +91,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.539
+    m_Value: 0.525
     min: 0
     max: 1
   smoothness:
@@ -159,63 +159,6 @@ MonoBehaviour:
   cascadeShadowBorder3:
     m_OverrideState: 0
     m_Value: 0
---- !u!114 &-3427653207288016998
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2150ee00179b2f4418ea8b21a7e98eea, type: 3}
-  m_Name: ExponentialFog
-  m_EditorClassIdentifier: 
-  active: 0
-  m_AdvancedMode: 0
-  colorMode:
-    m_OverrideState: 0
-    m_Value: 1
-  color:
-    m_OverrideState: 0
-    m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    hdr: 1
-    showAlpha: 0
-    showEyeDropper: 1
-  density:
-    m_OverrideState: 0
-    m_Value: 1
-    min: 0
-    max: 1
-  maxFogDistance:
-    m_OverrideState: 0
-    m_Value: 5000
-    min: 0
-  mipFogMaxMip:
-    m_OverrideState: 0
-    m_Value: 0.5
-    min: 0
-    max: 1
-  mipFogNear:
-    m_OverrideState: 0
-    m_Value: 0
-    min: 0
-  mipFogFar:
-    m_OverrideState: 0
-    m_Value: 1000
-    min: 0
-  fogDistance:
-    m_OverrideState: 0
-    m_Value: 200
-    min: 0
-  fogBaseHeight:
-    m_OverrideState: 0
-    m_Value: 0
-  fogHeightAttenuation:
-    m_OverrideState: 0
-    m_Value: 0.2
-    min: 0
-    max: 1
 --- !u!114 &-2677948741844907948
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -228,7 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7593b3a9277ac4696b20006c21dde2, type: 3}
   m_Name: VisualEnvironment
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   m_AdvancedMode: 0
   skyType:
     m_OverrideState: 1
@@ -237,8 +180,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   fogType:
-    m_OverrideState: 0
-    m_Value: 2
+    m_OverrideState: 1
+    m_Value: 1
 --- !u!114 &-2504500700747478733
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -326,7 +269,6 @@ MonoBehaviour:
   components:
   - {fileID: -4758081496202656594}
   - {fileID: -2677948741844907948}
-  - {fileID: -3427653207288016998}
   - {fileID: -5668449320996261846}
   - {fileID: 897861302624185411}
   - {fileID: 8279363993660850468}
@@ -337,6 +279,9 @@ MonoBehaviour:
   - {fileID: 2226072957996891167}
   - {fileID: -8389292876384932005}
   - {fileID: -2504500700747478733}
+  - {fileID: 1180990791297101899}
+  - {fileID: 4505162754179700529}
+  - {fileID: 3407233027470751703}
 --- !u!114 &897861302624185411
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -352,11 +297,11 @@ MonoBehaviour:
   active: 1
   m_AdvancedMode: 0
   postExposure:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.1
   contrast:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 11.8
     min: -100
     max: 100
   colorFilter:
@@ -372,9 +317,81 @@ MonoBehaviour:
     max: 180
   saturation:
     m_OverrideState: 1
-    m_Value: 5
+    m_Value: 16.2
     min: -100
     max: 100
+--- !u!114 &1180990791297101899
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d08ce26990eb1a4a9177b860541e702, type: 3}
+  m_Name: Exposure
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  mode:
+    m_OverrideState: 1
+    m_Value: 0
+  meteringMode:
+    m_OverrideState: 0
+    m_Value: 2
+  luminanceSource:
+    m_OverrideState: 0
+    m_Value: 1
+  fixedExposure:
+    m_OverrideState: 1
+    m_Value: -0.3
+  compensation:
+    m_OverrideState: 0
+    m_Value: 0
+  limitMin:
+    m_OverrideState: 0
+    m_Value: -10
+  limitMax:
+    m_OverrideState: 0
+    m_Value: 20
+  curveMap:
+    m_OverrideState: 0
+    m_Value:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: -10
+        value: -10
+        inSlope: 0
+        outSlope: 1
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 20
+        value: 20
+        inSlope: 1
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  adaptationMode:
+    m_OverrideState: 0
+    m_Value: 1
+  adaptationSpeedDarkToLight:
+    m_OverrideState: 0
+    m_Value: 3
+    min: 0.001
+  adaptationSpeedLightToDark:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0.001
 --- !u!114 &2226072957996891167
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -391,13 +408,13 @@ MonoBehaviour:
   m_AdvancedMode: 0
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: -0.27046263}
+    m_Value: {x: 1, y: 1, z: 1, w: -0.38581955}
   midtones:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0.042704627}
+    m_Value: {x: 1, y: 1, z: 1, w: 0.028285017}
   highlights:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0.099644125}
+    m_Value: {x: 1, y: 1, z: 1, w: 0.02754608}
   shadowsStart:
     m_OverrideState: 0
     m_Value: 0
@@ -414,6 +431,125 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 1
     min: 0
+--- !u!114 &3407233027470751703
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7649d9368d3a5c4ab8ad01a63e04962, type: 3}
+  m_Name: ChannelMixer
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  redOutRedIn:
+    m_OverrideState: 1
+    m_Value: 105
+    min: -200
+    max: 200
+  redOutGreenIn:
+    m_OverrideState: 0
+    m_Value: 0
+    min: -200
+    max: 200
+  redOutBlueIn:
+    m_OverrideState: 0
+    m_Value: 0
+    min: -200
+    max: 200
+  greenOutRedIn:
+    m_OverrideState: 0
+    m_Value: 0
+    min: -200
+    max: 200
+  greenOutGreenIn:
+    m_OverrideState: 0
+    m_Value: 100
+    min: -200
+    max: 200
+  greenOutBlueIn:
+    m_OverrideState: 0
+    m_Value: 0
+    min: -200
+    max: 200
+  blueOutRedIn:
+    m_OverrideState: 0
+    m_Value: 0
+    min: -200
+    max: 200
+  blueOutGreenIn:
+    m_OverrideState: 0
+    m_Value: 0
+    min: -200
+    max: 200
+  blueOutBlueIn:
+    m_OverrideState: 0
+    m_Value: 100
+    min: -200
+    max: 200
+  m_SelectedChannel: 0
+--- !u!114 &4505162754179700529
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb673446a9a2dfa408924fe9a56322e0, type: 3}
+  m_Name: LinearFog
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  colorMode:
+    m_OverrideState: 1
+    m_Value: 0
+  color:
+    m_OverrideState: 1
+    m_Value: {r: 0.8113208, g: 0.30272207, b: 0.11863652, a: 1}
+    hdr: 1
+    showAlpha: 0
+    showEyeDropper: 1
+  density:
+    m_OverrideState: 1
+    m_Value: 0.041
+    min: 0
+    max: 1
+  maxFogDistance:
+    m_OverrideState: 1
+    m_Value: 1635.9
+    min: 0
+  mipFogMaxMip:
+    m_OverrideState: 0
+    m_Value: 0.5
+    min: 0
+    max: 1
+  mipFogNear:
+    m_OverrideState: 0
+    m_Value: 0
+    min: 0
+  mipFogFar:
+    m_OverrideState: 0
+    m_Value: 1000
+    min: 0
+  fogStart:
+    m_OverrideState: 1
+    m_Value: 6.5
+    min: 0
+  fogEnd:
+    m_OverrideState: 1
+    m_Value: 79.8
+    min: 0
+  fogHeightStart:
+    m_OverrideState: 1
+    m_Value: 15.2
+  fogHeightEnd:
+    m_OverrideState: 1
+    m_Value: 421.7
 --- !u!114 &7998265839581604798
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -538,17 +674,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da5ab44aadfb1804db5fd470983ac1b8, type: 3}
   m_Name: LiftGammaGain
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   m_AdvancedMode: 0
   lift:
     m_OverrideState: 1
-    m_Value: {x: 0.997605, y: 1, z: 0.9970331, w: 0}
+    m_Value: {x: 0.9776468, y: 1, z: 0.9512394, w: 0}
   gamma:
     m_OverrideState: 1
-    m_Value: {x: 0.95514125, y: 0.99370605, z: 1, w: 0}
+    m_Value: {x: 1, y: 0.94882077, z: 0.98854446, w: 0}
   gain:
     m_OverrideState: 1
-    m_Value: {x: 0.9697553, y: 0.95173, z: 1, w: 0.042704627}
+    m_Value: {x: 0.88170594, y: 0.98051184, z: 1, w: 0.042704627}
 --- !u!114 &9010288108601031176
 MonoBehaviour:
   m_ObjectHideFlags: 3

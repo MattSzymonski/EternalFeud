@@ -41,6 +41,9 @@ public class PlayerMovement : MonoBehaviour
     public float shoutTime = 2;
     public bool readyToShout = false;
 
+    public Renderer stoneRenderer;
+    public TransformJuicer flaotingJuicer;
+
 
     void Start()
     {
@@ -53,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 shoutPosition = shoutArea.transform.position;
         shoutPosition.z += 2.5f; //for now just twice wide as player
         shoutArea.transform.position = shoutPosition;
+        flaotingJuicer.StartJuicing();
     }
 
     void Update()
@@ -63,6 +67,15 @@ public class PlayerMovement : MonoBehaviour
             Rotation();
             Shout();
             CheckDrown();
+
+            if(playerNumber == 1)
+            {
+                stoneRenderer.sharedMaterial.SetColor("_EmissiveColor", new Color(1f, 0.2f, 0.2f, 1) * shoutTimer * 60);
+            }
+            if (playerNumber == 2)
+            {
+                stoneRenderer.sharedMaterial.SetColor("_EmissiveColor", new Color(0.2f, 0.2f, 1f, 1) * shoutTimer * 60);
+            }
         }
     }
 
