@@ -6891,8 +6891,8 @@ MonoBehaviour:
   spawnerPlayer2: {fileID: 5901555446270803236}
   spawnerRadius: 8
   spawnSheeps: 1
-  startHealthPlayer1: 1
-  startHealthPlayer2: 1
+  startHealthPlayer1: 1000
+  startHealthPlayer2: 1000
   healthPlayer1: 1000
   healthPlayer2: 1000
   healthPlayer1Slider: {fileID: 170160787}
@@ -9827,6 +9827,134 @@ MonoBehaviour:
     playOnAwake: 0
     loop: 0
     soundType: 1
+    source: {fileID: 0}
+  - name: bleat1
+    clip: {fileID: 8300000, guid: e7d7e0e0bb8dfec4495e7abec1cf0cb0, type: 3}
+    volume: 1
+    pitch: 1
+    playOnAwake: 0
+    loop: 0
+    soundType: 0
+    source: {fileID: 0}
+  - name: bleat2
+    clip: {fileID: 8300000, guid: eec12b9c5b60d7147a2036d44c245416, type: 3}
+    volume: 1
+    pitch: 1
+    playOnAwake: 0
+    loop: 0
+    soundType: 0
+    source: {fileID: 0}
+  - name: bleat3
+    clip: {fileID: 8300000, guid: 2498b313e1dcd8b44b911f0c40a09254, type: 3}
+    volume: 1
+    pitch: 1
+    playOnAwake: 0
+    loop: 0
+    soundType: 0
+    source: {fileID: 0}
+  - name: bleat4
+    clip: {fileID: 8300000, guid: 64f1947d17770324a91cb1ad57bf3964, type: 3}
+    volume: 1
+    pitch: 1
+    playOnAwake: 0
+    loop: 0
+    soundType: 0
+    source: {fileID: 0}
+  - name: bleatexclusive
+    clip: {fileID: 8300000, guid: 61435c325adefab428f54cc38d8aba23, type: 3}
+    volume: 1
+    pitch: 1
+    playOnAwake: 0
+    loop: 0
+    soundType: 0
+    source: {fileID: 0}
+  - name: bleat1Die
+    clip: {fileID: 8300000, guid: e7d7e0e0bb8dfec4495e7abec1cf0cb0, type: 3}
+    volume: 0.5
+    pitch: 1
+    playOnAwake: 0
+    loop: 0
+    soundType: 0
+    source: {fileID: 0}
+  - name: bleat2Die
+    clip: {fileID: 8300000, guid: eec12b9c5b60d7147a2036d44c245416, type: 3}
+    volume: 0.5
+    pitch: 1
+    playOnAwake: 0
+    loop: 0
+    soundType: 0
+    source: {fileID: 0}
+  - name: bleat3Die
+    clip: {fileID: 8300000, guid: 2498b313e1dcd8b44b911f0c40a09254, type: 3}
+    volume: 0.5
+    pitch: 1
+    playOnAwake: 0
+    loop: 0
+    soundType: 0
+    source: {fileID: 0}
+  - name: bleat4Die
+    clip: {fileID: 8300000, guid: 64f1947d17770324a91cb1ad57bf3964, type: 3}
+    volume: 0.5
+    pitch: 1
+    playOnAwake: 0
+    loop: 0
+    soundType: 0
+    source: {fileID: 0}
+  - name: whoosh1
+    clip: {fileID: 8300000, guid: 19432429c05048e408b254177eb0d5c5, type: 3}
+    volume: 1
+    pitch: 1
+    playOnAwake: 0
+    loop: 0
+    soundType: 1
+    source: {fileID: 0}
+  - name: whoosh2
+    clip: {fileID: 8300000, guid: b292377606fdcf34983d6758636b24cd, type: 3}
+    volume: 1
+    pitch: 1
+    playOnAwake: 0
+    loop: 0
+    soundType: 0
+    source: {fileID: 0}
+  - name: accumulate1
+    clip: {fileID: 8300000, guid: 66b40470eb628ad4f9b122575a2972e0, type: 3}
+    volume: 0.35
+    pitch: 1
+    playOnAwake: 0
+    loop: 1
+    soundType: 0
+    source: {fileID: 0}
+  - name: accumulate2
+    clip: {fileID: 8300000, guid: c7e33e588a138424a82ec996092f4ba6, type: 3}
+    volume: 0.35
+    pitch: 1
+    playOnAwake: 0
+    loop: 1
+    soundType: 0
+    source: {fileID: 0}
+  - name: thud1
+    clip: {fileID: 8300000, guid: a302d134d9c45464092480d0f2adf6a7, type: 3}
+    volume: 0.1
+    pitch: 1
+    playOnAwake: 0
+    loop: 0
+    soundType: 0
+    source: {fileID: 0}
+  - name: thud2
+    clip: {fileID: 8300000, guid: c66e8a1b4f7c52c4283e65985111349e, type: 3}
+    volume: 0.1
+    pitch: 1
+    playOnAwake: 0
+    loop: 0
+    soundType: 0
+    source: {fileID: 0}
+  - name: thud3
+    clip: {fileID: 8300000, guid: 14bfee979babed84e8612d1cdfb04b50, type: 3}
+    volume: 0.1
+    pitch: 1
+    playOnAwake: 0
+    loop: 0
+    soundType: 0
     source: {fileID: 0}
   musicMixerGroup: {fileID: -7923465186692303526, guid: f5091cc29b1ca8f4586011abf0380ac6,
     type: 2}

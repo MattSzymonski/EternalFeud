@@ -122,17 +122,28 @@ public class PlayerMovement : MonoBehaviour
         if (playerNumber == 1)
         {
             lookDirection = new Vector3(Input.GetAxis("Controller1 Right Stick Horizontal"), 0, -Input.GetAxis("Controller1 Right Stick Vertical"));
-            if (lookDirection == Vector3.zero) return;
+            if (lookDirection == Vector3.zero)
+            {
+                transform.rotation = Quaternion.identity;
+            }
+            else
+            {
+                transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
+            }
             DebugExtension.DebugArrow(transform.position, lookDirection * 10, Color.yellow);
-            transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
         }
         if (playerNumber == 2)
         {
             lookDirection = new Vector3(Input.GetAxis("Controller2 Right Stick Horizontal"), 0, -Input.GetAxis("Controller2 Right Stick Vertical"));
-            if (lookDirection == Vector3.zero) return;
+            if (lookDirection == Vector3.zero)
+            {
+                transform.rotation = Quaternion.identity;
+            }
+            else
+            {
+                transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
+            }
             DebugExtension.DebugArrow(transform.position, lookDirection * 10, Color.yellow);
-            transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
-
         }
     }
 
@@ -142,6 +153,10 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetAxis("Controller1 Triggers") != 0)
             {
+                if(!MightyGamePack.MightyGameManager.gameManager.audioManager.IsSoundPlaying("accumulate1"))
+                {
+                    MightyGamePack.MightyGameManager.gameManager.audioManager.PlaySound("accumulate1");
+                }
                 if (shoutTimer < shoutTime)
                 {
                     shoutTimer += 1 * Time.deltaTime;
@@ -150,7 +165,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     if (!readyToShout)
                     {
-                        effectJuicer.StartJuicing();
+                        effectJuicer.StartJuicing();               
                     }
                     readyToShout = true;
                 }
@@ -171,6 +186,10 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetAxis("Controller2 Triggers") != 0)
             {
+                if (!MightyGamePack.MightyGameManager.gameManager.audioManager.IsSoundPlaying("accumulate2"))
+                {
+                    MightyGamePack.MightyGameManager.gameManager.audioManager.PlaySound("accumulate2");
+                }
                 if (shoutTimer < shoutTime)
                 {
                     shoutTimer += 1 * Time.deltaTime;
@@ -200,6 +219,8 @@ public class PlayerMovement : MonoBehaviour
    private void ShoutImpl()
     {
         Vector3 boxBounds = transform.localScale * 4.0f;
+        MightyGamePack.MightyGameManager.gameManager.audioManager.StopSound(playerNumber == 1 ? "accumulate1" : "accumulate2");
+        MightyGamePack.MightyGameManager.gameManager.audioManager.PlaySound(playerNumber == 1 ? "whoosh1" : "whoosh2");
         foreach (var obj in Physics.OverlapBox(shoutArea.transform.position, boxBounds / 2.0f, transform.rotation)) //slightly bigger than current gizmo, when tweaking remember to tweak corresponding gizmo
         {     
             if (obj.tag != "Sheep") continue; // for now ignore shouting at other player
@@ -213,7 +234,14 @@ public class PlayerMovement : MonoBehaviour
             obj.GetComponent<Rigidbody>().AddForce(lookDirection * shoutStrength
                 * shoutDecrease, ForceMode.Impulse);
             obj.GetComponent<Rigidbody>().AddTorque(GenerateRandomRotation() * 0.3f, ForceMode.Impulse);
-            //MightyGamePack.MightyGameManager.gameManager.audioManager.PlayRandomSound("TreeGrow1", "TreeGrow2", "TreeGrow3", "TreeGrow4");
+            if(Random.Range(0, 100) > 90)
+            {
+                MightyGamePack.MightyGameManager.gameManager.audioManager.PlaySound("bleatexclusive");
+            }
+            else
+            {
+                MightyGamePack.MightyGameManager.gameManager.audioManager.PlayRandomSound("bleat1", "bleat2", "bleat3", "bleat4");
+            }
             MightyGamePack.MightyGameManager.gameManager.particleEffectsManager.SpawnParticleEffect(obj.transform.position, Quaternion.identity, 20, 0.25f, "Hit");
 
             Debug.Log("FUS RO DAH! on: " + obj.name);
