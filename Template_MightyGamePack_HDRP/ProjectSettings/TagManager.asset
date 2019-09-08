@@ -10,6 +10,8 @@ TagManager:
   - ShoutArea
   - TerritoryNeutral
   - Sheep
+  - FxTemporaire
+  - SkipPlayer
   layers:
   - Default
   - TransparentFX
@@ -23,8 +25,8 @@ TagManager:
   - TerritoryPlayer1
   - TerritoryPlayer2
   - Sheep
-  - 
-  - 
+  - SkipPlayer
+  - Player
   - 
   - 
   - 

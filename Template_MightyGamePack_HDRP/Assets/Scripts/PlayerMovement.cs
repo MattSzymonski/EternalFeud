@@ -25,8 +25,9 @@ public class PlayerMovement : MonoBehaviour
     public float movementSmoothing = 0.05f;
 
 
+    public ParticleSystem chargingPS1;
+    public ParticleSystem chargingPS2;
 
-   
 
     Animator anim;
     public float drownHeightThreshold = -2;
@@ -44,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
     public Renderer stoneRenderer;
     public TransformJuicer flaotingJuicer;
 
+    bool pp = false;
 
     void Start()
     {
@@ -98,7 +100,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Move() //Interpreting player controllers input
     {
-
         if (playerNumber == 1)
         {
             movementDirection = new Vector3(Input.GetAxis("Controller1 Left Stick Horizontal"), 0, -Input.GetAxis("Controller1 Left Stick Vertical")) * movementSpeed;
@@ -142,9 +143,19 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetAxis("Controller1 Triggers") != 0)
             {
+                if (!pp)
+                {
+                    chargingPS1.Play();
+                    chargingPS2.Play();
+                    pp = true;
+                }
+                
                 if (shoutTimer < shoutTime)
                 {
                     shoutTimer += 1 * Time.deltaTime;
+                   // chargingPS1.startColor = new Color(0.1f, 0.65f, 0.95f);
+                   // chargingPS1.startColor = new Color(0.1f, 0.65f, 0.95f);
+                 
                 }
                 else
                 {
@@ -163,7 +174,16 @@ public class PlayerMovement : MonoBehaviour
                     ShoutImpl();
                     readyToShout = false;
                 }
+
+
+       
+                    chargingPS1.Stop();
+                    chargingPS2.Stop();
+                    pp = false;
+                
+
                 shoutTimer = 0;
+
             }
         }
 
@@ -171,9 +191,18 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetAxis("Controller2 Triggers") != 0)
             {
+                if (!pp)
+                {
+                    chargingPS1.Play();
+                    chargingPS2.Play();
+                    pp = true;
+                }
                 if (shoutTimer < shoutTime)
                 {
                     shoutTimer += 1 * Time.deltaTime;
+                 //   chargingPS1.startColor = new Color(1.0f, 0.5f, 0.5f);
+                 //   chargingPS2.startColor = new Color(1.0f, 0.5f, 0.5f);
+                    
                 }
                 else
                 {
@@ -192,6 +221,9 @@ public class PlayerMovement : MonoBehaviour
                     ShoutImpl();
                     readyToShout = false;
                 }
+                chargingPS1.Stop();
+                chargingPS2.Stop();
+                pp = false;
                 shoutTimer = 0;
             }
         }
@@ -210,16 +242,18 @@ public class PlayerMovement : MonoBehaviour
             float shoutDecrease = Mathf.Pow((distanceRoot + 6), -2.0f) * 50.0f;
 
             lookDirection.y += directionAngle;
-            obj.GetComponent<Rigidbody>().AddForce(lookDirection * shoutStrength
-                * shoutDecrease, ForceMode.Impulse);
+            obj.GetComponent<Rigidbody>().AddForce(lookDirection * shoutStrength * shoutDecrease, ForceMode.Impulse);
             obj.GetComponent<Rigidbody>().AddTorque(GenerateRandomRotation() * 0.3f, ForceMode.Impulse);
             //MightyGamePack.MightyGameManager.gameManager.audioManager.PlayRandomSound("TreeGrow1", "TreeGrow2", "TreeGrow3", "TreeGrow4");
             MightyGamePack.MightyGameManager.gameManager.particleEffectsManager.SpawnParticleEffect(obj.transform.position, Quaternion.identity, 20, 0.25f, "Hit");
 
+
+
             Debug.Log("FUS RO DAH! on: " + obj.name);
         }
         particles.Play();
-        Camera.main.transform.parent.GetComponent<MightyGamePack.CameraShaker>().ShakeOnce(1.0f, 1f, 1f, 1.25f);
+        Camera.main.transform.parent.GetComponent<MightyGamePack.CameraShaker>().ShakeOnce(2.0f, 1f, 1f, 1.25f);
+        MightyGamePack.MightyGameManager.gameManager.UIManager.TriggerHitBlinkEffect(new Color(1, 1f, 1f, 0.4f));
     }
 
     private Vector3 GenerateRandomRotation()

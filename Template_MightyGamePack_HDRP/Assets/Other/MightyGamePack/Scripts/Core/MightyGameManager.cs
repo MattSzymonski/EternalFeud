@@ -65,6 +65,7 @@ using UnityEngine;
 
 using NaughtyAttributes;
 using UnityEngine.UI;
+using UnityEngine.Rendering;
 
 namespace MightyGamePack
 {
@@ -112,6 +113,13 @@ namespace MightyGamePack
 
         [Header("----Game----")]
         //public float score;
+
+        public UnityEngine.Experimental.Rendering.HDPipeline.DecalProjectorComponent player1dp1;
+        public UnityEngine.Experimental.Rendering.HDPipeline.DecalProjectorComponent player1dp2;
+        public UnityEngine.Experimental.Rendering.HDPipeline.DecalProjectorComponent player2dp1;
+        public UnityEngine.Experimental.Rendering.HDPipeline.DecalProjectorComponent player2dp2;
+
+
         public CameraMovement cm;
 
         public GameObject player1Prefab;
@@ -200,6 +208,13 @@ namespace MightyGamePack
                 healthPlayer1Slider.fillAmount = (healthPlayer1 / startHealthPlayer1) * 100;
                 healthPlayer2Slider.fillAmount = (healthPlayer2 / startHealthPlayer2) * 100;
 
+
+                player1dp1.fadeFactor = (1.0f - (float)healthPlayer1 / (float)startHealthPlayer1);
+                player1dp2.fadeFactor = (1.0f - (float)healthPlayer1 / (float)startHealthPlayer1);
+
+                player2dp1.fadeFactor = (1.0f - (float)healthPlayer2 / (float)startHealthPlayer2);
+                player2dp2.fadeFactor = (1.0f - (float)healthPlayer2 / (float)startHealthPlayer2);
+
                 if (healthPlayer1 <= 0)
                 {
                     GameOver(2);
@@ -270,11 +285,13 @@ namespace MightyGamePack
                 {
                     Vector2 point = Random.insideUnitCircle * spawnerRadius;
                     Vector3 position = sheepSpawnerPlayer1[Random.Range(0, sheepSpawnerPlayer1.Count)].transform.position;
-                    GameObject newSheep = Instantiate(sheepPrefabPlayer1, new Vector3(position.x + point.x, position.y, position.z + point.y), Quaternion.identity) as GameObject;
+                    GameObject newSheep = Instantiate(sheepPrefabPlayer1, new Vector3(position.x + point.x, position.y, position.z + point.y), Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f)) as GameObject;
                     newSheep.name = "Sheep_" + sheeps.Count.ToString();
                     newSheep.GetComponent<Sheep>().owner = 1;
                     newSheep.transform.parent = GameObject.Find("Sheeps").transform;
                     sheeps.Add(newSheep.GetComponent<Sheep>());
+
+                    MightyGamePack.MightyGameManager.gameManager.particleEffectsManager.SpawnParticleEffect(newSheep.transform.position, Quaternion.identity, 3, 0.0f, "Spawn");
                 }
             }
             else //Spawn for player 2
@@ -283,11 +300,13 @@ namespace MightyGamePack
                 {
                     Vector2 point = Random.insideUnitCircle * spawnerRadius;
                     Vector3 position = sheepSpawnerPlayer2[Random.Range(0, sheepSpawnerPlayer2.Count)].transform.position;
-                    GameObject newSheep = Instantiate(sheepPrefabPlayer2, new Vector3(position.x + point.x, position.y, position.z + point.y), Quaternion.identity) as GameObject;
+                    GameObject newSheep = Instantiate(sheepPrefabPlayer2, new Vector3(position.x + point.x, position.y, position.z + point.y), Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f)) as GameObject;
                     newSheep.GetComponent<Sheep>().owner = 2;
                     newSheep.transform.parent = GameObject.Find("Sheeps").transform;
                     newSheep.name = "Sheep_" + sheeps.Count.ToString();
                     sheeps.Add(newSheep.GetComponent<Sheep>());
+
+                    MightyGamePack.MightyGameManager.gameManager.particleEffectsManager.SpawnParticleEffect(newSheep.transform.position, Quaternion.identity, 3, 0.0f, "Spawn");
                 }
             }
         }
