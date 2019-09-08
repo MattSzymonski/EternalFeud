@@ -112,7 +112,10 @@ namespace MightyGamePack
 
         [Header("----Game----")]
         //public float score;
-        public GameObject playerPrefab;
+        public CameraMovement cm;
+
+        public GameObject player1Prefab;
+        public GameObject player2Prefab;
         public GameObject spawnerPlayer1;
         public GameObject spawnerPlayer2;
         public float spawnerRadius = 1;
@@ -171,14 +174,16 @@ namespace MightyGamePack
             healthPlayer2 = startHealthPlayer2;
 
             Vector3 position = spawnerPlayer1.transform.position;
-            GameObject player = Instantiate(playerPrefab, position, Quaternion.identity) as GameObject;
+            GameObject player = Instantiate(player1Prefab, position, Quaternion.identity) as GameObject;
             player.name = "Player One";
             player.GetComponent<PlayerMovement>().playerNumber = 1;
+            cm.playerObject1 = player;
 
             position = spawnerPlayer2.transform.position;
-            player = Instantiate(playerPrefab, position, Quaternion.identity) as GameObject;
+            player = Instantiate(player2Prefab, position, Quaternion.identity) as GameObject;
             player.name = "Player Two";
             player.GetComponent<PlayerMovement>().playerNumber = 2;
+            cm.playerObject2 = player;
         }
 
 
@@ -403,6 +408,9 @@ namespace MightyGamePack
                 DebugExtension.DrawPoint(sheepSpawnerPlayer2[i].transform.position, Color.blue, 1);
                 DebugExtension.DrawCircle(sheepSpawnerPlayer2[i].transform.position, Vector3.up, Color.blue, spawnerRadius);
             }
+
+            DebugExtension.DrawPoint(spawnerPlayer1.transform.position, Color.red, 3);
+            DebugExtension.DrawPoint(spawnerPlayer2.transform.position, Color.blue, 3);
         }
 
 

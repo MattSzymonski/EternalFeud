@@ -267,7 +267,7 @@ namespace MightyGamePack
                 inGameScoreAnimator.SetBool("Opened", false);
 
                // inGameScoreText = inGameScore.transform.Find("Text").GetComponent<Text>();
-              //  inGameScoreGameOverMenuText = inGameScoreGameOverMenu.transform.Find("Text").GetComponent<Text>();
+                inGameScoreGameOverMenuText = inGameScoreGameOverMenu.transform.Find("Text").GetComponent<Text>();
             }
 
             if (inGameScore && !gameManager.displayInGameScore)

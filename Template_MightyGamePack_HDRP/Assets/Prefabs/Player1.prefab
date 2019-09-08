@@ -117,7 +117,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   animationDirectionMultiplier: {x: 0, y: 1, z: 0}
-  evaluationSpeed: 2
+  evaluationSpeed: 0.6
   looping: 1
   detectCollisions: 0
   tagsToCollide: []
@@ -4986,7 +4986,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8938210575838136705}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
