@@ -6891,8 +6891,8 @@ MonoBehaviour:
   spawnerPlayer2: {fileID: 5901555446270803236}
   spawnerRadius: 8
   spawnSheeps: 1
-  startHealthPlayer1: 1000
-  startHealthPlayer2: 1000
+  startHealthPlayer1: 1
+  startHealthPlayer2: 1
   healthPlayer1: 1000
   healthPlayer2: 1000
   healthPlayer1Slider: {fileID: 170160787}
@@ -13927,7 +13927,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7efb3a13e240b8744ac30b1131745623, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particleEffects: []
+  particleEffects:
+  - name: Hit
+    prefab: {fileID: 1017702854631796680, guid: 3957ddf6a70e7e743ae4f643b16f7711,
+      type: 3}
   activeParticleEffects: []
 --- !u!4 &1735607489
 Transform:

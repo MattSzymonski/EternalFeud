@@ -197,9 +197,8 @@ namespace MightyGamePack
 
                 SpawnSheeps();
 
-                healthPlayer1Slider.fillAmount = (healthPlayer1 / startHealthPlayer1) * 100;
-                healthPlayer2Slider.fillAmount = (healthPlayer2 / startHealthPlayer2) * 100;
-
+                healthPlayer1Slider.fillAmount = ((float)healthPlayer1 / (float)startHealthPlayer1);
+                healthPlayer2Slider.fillAmount = ((float)healthPlayer2 / (float)startHealthPlayer2);
                 if (healthPlayer1 <= 0)
                 {
                     GameOver(2);
