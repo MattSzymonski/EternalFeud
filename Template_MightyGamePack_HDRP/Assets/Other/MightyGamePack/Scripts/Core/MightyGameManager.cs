@@ -112,7 +112,7 @@ namespace MightyGamePack
 
         [Header("----Game----")]
         //public float score;
-
+        public GameObject playerPrefab;
         public GameObject spawnerPlayer1;
         public GameObject spawnerPlayer2;
         public float spawnerRadius = 1;
@@ -167,6 +167,18 @@ namespace MightyGamePack
                 Debug.LogError("There can be only one MightyGameManager at a time");
                 UnityEditor.EditorApplication.isPlaying = false;
             }
+            healthPlayer1 = startHealthPlayer1;
+            healthPlayer2 = startHealthPlayer2;
+
+            Vector3 position = spawnerPlayer1.transform.position;
+            GameObject player = Instantiate(playerPrefab, position, Quaternion.identity) as GameObject;
+            player.name = "Player One";
+            player.GetComponent<PlayerMovement>().playerNumber = 1;
+
+            position = spawnerPlayer2.transform.position;
+            player = Instantiate(playerPrefab, position, Quaternion.identity) as GameObject;
+            player.name = "Player Two";
+            player.GetComponent<PlayerMovement>().playerNumber = 2;
         }
 
 
@@ -328,14 +340,28 @@ namespace MightyGamePack
 
         public void RestartGame() //Clearing the scene, removing enemies, respawning player, zeroing score, etc
         {
-            for (int i = sheeps.Count; i-- > 0;)
+            for (int i = sheeps.Count - 1; i >= 0; --i)
             {
-                GameObject sheepToDestroy = sheeps[i].gameObject;
+                if (sheeps[i])
+                    Destroy(sheeps[i].gameObject);
                 sheeps.RemoveAt(i);
-                Destroy(sheepToDestroy);
             }
             healthPlayer1 = startHealthPlayer1;
             healthPlayer2 = startHealthPlayer2;
+
+            var players = GameObject.FindGameObjectsWithTag("Player");
+            foreach(var player in players)
+            {
+                if (player.name == "Player One")
+                {
+                    player.transform.position = spawnerPlayer1.transform.position;
+                    player.transform.rotation = new Quaternion(spawnerPlayer1.transform.rotation.x, spawnerPlayer1.transform.rotation.y, spawnerPlayer1.transform.rotation.z, spawnerPlayer1.transform.rotation.w);
+                } else if (player.name == "Player Two")
+                {
+                    player.transform.position = spawnerPlayer2.transform.position;
+                    player.transform.rotation = new Quaternion(spawnerPlayer2.transform.rotation.x, spawnerPlayer2.transform.rotation.y, spawnerPlayer2.transform.rotation.z, spawnerPlayer2.transform.rotation.w);
+                }
+            }
 
             UIManager.SetInGameScore("");
         }

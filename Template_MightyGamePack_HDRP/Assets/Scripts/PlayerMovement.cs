@@ -122,12 +122,14 @@ public class PlayerMovement : MonoBehaviour
         if (playerNumber == 1)
         {
             lookDirection = new Vector3(Input.GetAxis("Controller1 Right Stick Horizontal"), 0, -Input.GetAxis("Controller1 Right Stick Vertical"));
+            if (lookDirection == Vector3.zero) return;
             DebugExtension.DebugArrow(transform.position, lookDirection * 10, Color.yellow);
             transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
         }
         if (playerNumber == 2)
         {
             lookDirection = new Vector3(Input.GetAxis("Controller2 Right Stick Horizontal"), 0, -Input.GetAxis("Controller2 Right Stick Vertical"));
+            if (lookDirection == Vector3.zero) return;
             DebugExtension.DebugArrow(transform.position, lookDirection * 10, Color.yellow);
             transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
 
@@ -197,31 +199,27 @@ public class PlayerMovement : MonoBehaviour
  
    private void ShoutImpl()
     {
-        //for now just react for every object in collision regardless of distance from source
-        //TODO: add cooldown
-        // add reduction of power further from me
-        // ignore objects not in cone -> add additional box for objects close by
-        // add visual cue that it is ready
         Vector3 boxBounds = transform.localScale * 4.0f;
         foreach (var obj in Physics.OverlapBox(shoutArea.transform.position, boxBounds / 2.0f, transform.rotation)) //slightly bigger than current gizmo, when tweaking remember to tweak corresponding gizmo
         {     
             if (obj.tag != "Sheep") continue; // for now ignore shouting at other player
-            //Vector3 direction = transform.rotation * Vector3.forward;
-            //direction.y = directionAngle;
 
             float distanceX = Mathf.Abs(transform.position.x - obj.transform.position.x);
             float distanceZ = Mathf.Abs(transform.position.z - obj.transform.position.z);
             float distanceRoot = Mathf.Sqrt(distanceX * distanceX + distanceZ * distanceZ);
-            float shoutDecrease = Mathf.Pow((distanceRoot + 1), -2.0f) * 10.0f;
+            float shoutDecrease = Mathf.Pow((distanceRoot + 6), -2.0f) * 50.0f;
 
+            lookDirection.y += directionAngle;
             obj.GetComponent<Rigidbody>().AddForce(lookDirection * shoutStrength
                 * shoutDecrease, ForceMode.Impulse);
             obj.GetComponent<Rigidbody>().AddTorque(GenerateRandomRotation() * 0.3f, ForceMode.Impulse);
+            //MightyGamePack.MightyGameManager.gameManager.audioManager.PlayRandomSound("TreeGrow1", "TreeGrow2", "TreeGrow3", "TreeGrow4");
+            MightyGamePack.MightyGameManager.gameManager.particleEffectsManager.SpawnParticleEffect(obj.transform.position, Quaternion.identity, 20, 0.25f, "Hit");
 
             Debug.Log("FUS RO DAH! on: " + obj.name);
         }
         particles.Play();
-        //add visual cue
+        Camera.main.transform.parent.GetComponent<MightyGamePack.CameraShaker>().ShakeOnce(1.0f, 1f, 1f, 1.25f);
     }
 
     private Vector3 GenerateRandomRotation()
