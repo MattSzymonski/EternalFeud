@@ -115,6 +115,29 @@ namespace MightyGamePack
             sound.source.Play();
         }
 
+        public void StopSound(string soundName)
+        {
+
+            Sound sound = Array.Find(sounds, soundFind => soundFind.name == soundName);
+            if (sound == null)
+            {
+                Debug.LogWarning("Sound: " + soundName + " not found!");
+                return;
+            }
+            sound.source.Stop();
+        }
+
+        public bool IsSoundPlaying(string soundName)
+        {
+            Sound sound = Array.Find(sounds, soundFind => soundFind.name == soundName);
+            if (sound == null)
+            {
+                Debug.LogWarning("Sound: " + soundName + " not found!");
+                return false; //not sure if correct
+            }
+            return sound.source.isPlaying;
+        }
+
         public void PlayRandomSound(params string[] soundNames)
         {
             string soundName = soundNames[UnityEngine.Random.Range(0, soundNames.Length)];

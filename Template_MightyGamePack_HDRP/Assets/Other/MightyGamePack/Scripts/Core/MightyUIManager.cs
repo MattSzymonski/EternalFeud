@@ -1047,7 +1047,7 @@ namespace MightyGamePack
                 inGameScoreAnimator.SetBool("Opened", true);
             }
             gameManager.SetGameState(GameState.Playing);
-            gameManager.RestartGame();
+           // gameManager.RestartGame();
             ToggleUIInputBlock(false);
         }
 

@@ -17,6 +17,7 @@ public class Sheep : MonoBehaviour
     Quaternion startBackOnFoursAngle = Quaternion.identity;
     Quaternion finalBackOnFoursAngle = Quaternion.identity;
     bool backOnFoursLerp;
+    bool canPlayThud = false;
 
 
     [Header("Sheeps update")]
@@ -29,15 +30,28 @@ public class Sheep : MonoBehaviour
 
 
     Rigidbody rb;
+    Vector3 previousVelocity;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        previousVelocity = rb.velocity;
+        canPlayThud = true;
     }
 
 
     private void Update()
     {
+        if(territory == 0) //maybe first one is delayed
+        {
+            previousVelocity = rb.velocity;
+            canPlayThud = true;
+        }
+        else if(rb.velocity != previousVelocity && canPlayThud)
+        {
+            MightyGamePack.MightyGameManager.gameManager.audioManager.PlayRandomSound("thud1", "thud2", "thud3");
+            canPlayThud = false;
+        }
         if (sheepUpdateTimer < sheepsUpdateTime) //One second
         {
             sheepUpdateTimer += 1 * Time.deltaTime;
@@ -125,6 +139,7 @@ public class Sheep : MonoBehaviour
 
     void Die()
     {
+        MightyGamePack.MightyGameManager.gameManager.audioManager.PlayRandomSound("bleat1Die", "bleat2Die", "bleat3Die", "bleat4Die");
         MightyGamePack.MightyGameManager.gameManager.sheepDrownToSpawn++;
         Destroy(gameObject);
     }
