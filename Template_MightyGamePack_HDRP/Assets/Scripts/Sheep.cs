@@ -131,6 +131,7 @@ public class Sheep : MonoBehaviour
    
     void DamageTerritory()
     {
+        if (!MightyGamePack.MightyGameManager.gameManager) return;
         if (owner == 1 && territory == 2)
         {
             MightyGamePack.MightyGameManager.gameManager.healthPlayer2 -= Mathf.FloorToInt(sheepStrength);

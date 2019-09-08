@@ -109,12 +109,14 @@ public class PlayerMovement : MonoBehaviour
         if (playerNumber == 1)
         {
             lookDirection = new Vector3(Input.GetAxis("Controller1 Right Stick Horizontal"), 0, -Input.GetAxis("Controller1 Right Stick Vertical"));
+            if (lookDirection == Vector3.zero) return;
             DebugExtension.DebugArrow(transform.position, lookDirection * 10, Color.yellow);
             transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
         }
         if (playerNumber == 2)
         {
             lookDirection = new Vector3(Input.GetAxis("Controller2 Right Stick Horizontal"), 0, -Input.GetAxis("Controller2 Right Stick Vertical"));
+            if (lookDirection == Vector3.zero) return;
             DebugExtension.DebugArrow(transform.position, lookDirection * 10, Color.yellow);
             transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
 

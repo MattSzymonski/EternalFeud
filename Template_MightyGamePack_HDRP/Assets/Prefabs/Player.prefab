@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 19266538}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.03, z: 1.2}
+  m_LocalPosition: {x: 0, y: 1, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8938210575838136710}
@@ -5046,7 +5046,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerNumber: 1
   shoutStrength: 35
-  directionAngle: 1
+  directionAngle: 0.5
   halfExtentsOfShoutBox: 1
   movementSmoothing: 0.05
   drownHeightThreshold: -1
