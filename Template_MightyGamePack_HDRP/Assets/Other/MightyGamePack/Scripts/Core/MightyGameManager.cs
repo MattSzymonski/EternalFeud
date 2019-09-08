@@ -120,6 +120,9 @@ namespace MightyGamePack
         public UnityEngine.Experimental.Rendering.HDPipeline.DecalProjectorComponent player2dp2;
 
 
+        GameObject player1;
+        GameObject player2;
+
         public CameraMovement cm;
 
         public GameObject player1Prefab;
@@ -176,22 +179,25 @@ namespace MightyGamePack
             if (gameManager != this)
             {
                 Debug.LogError("There can be only one MightyGameManager at a time");
-                UnityEditor.EditorApplication.isPlaying = false;
+                //UnityEditor.EditorApplication.isPlaying = false;
             }
             healthPlayer1 = startHealthPlayer1;
             healthPlayer2 = startHealthPlayer2;
 
             Vector3 position = spawnerPlayer1.transform.position;
-            GameObject player = Instantiate(player1Prefab, position, Quaternion.identity) as GameObject;
-            player.name = "Player One";
-            player.GetComponent<PlayerMovement>().playerNumber = 1;
-            cm.playerObject1 = player;
+            GameObject playera = Instantiate(player1Prefab, position, Quaternion.identity) as GameObject;
+            playera.name = "Player One";
+            playera.GetComponent<PlayerMovement>().playerNumber = 1;
+            cm.playerObject1 = playera;
+            player1 = playera;
+
 
             position = spawnerPlayer2.transform.position;
-            player = Instantiate(player2Prefab, position, Quaternion.identity) as GameObject;
-            player.name = "Player Two";
-            player.GetComponent<PlayerMovement>().playerNumber = 2;
-            cm.playerObject2 = player;
+            GameObject playerb = Instantiate(player2Prefab, position, Quaternion.identity) as GameObject;
+            playerb.name = "Player Two";
+            playerb.GetComponent<PlayerMovement>().playerNumber = 2;
+            cm.playerObject2 = playerb;
+            player2 = playerb;
         }
 
 
@@ -285,7 +291,7 @@ namespace MightyGamePack
                 {
                     Vector2 point = Random.insideUnitCircle * spawnerRadius;
                     Vector3 position = sheepSpawnerPlayer1[Random.Range(0, sheepSpawnerPlayer1.Count)].transform.position;
-                    GameObject newSheep = Instantiate(sheepPrefabPlayer1, new Vector3(position.x + point.x, position.y, position.z + point.y), Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f)) as GameObject;
+                    GameObject newSheep = Instantiate(sheepPrefabPlayer1, new Vector3(position.x + point.x, position.y, position.z + point.y),  Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f)) as GameObject;
                     newSheep.name = "Sheep_" + sheeps.Count.ToString();
                     newSheep.GetComponent<Sheep>().owner = 1;
                     newSheep.transform.parent = GameObject.Find("Sheeps").transform;
@@ -338,13 +344,32 @@ namespace MightyGamePack
 
             if(winner == 1)
             {
-                UIManager.SetInGameScore("White player wins!");
+                UIManager.SetInGameScore("RED GOD WINS!");
             }
             if (winner == 2)
             {
-                UIManager.SetInGameScore("Black player wins!");
+                UIManager.SetInGameScore("BLUE GOD WINS!");
             }
+
+
+
             }
+
+
+            player1.GetComponent<PlayerMovement>().chargingPS1.Stop();
+            player1.GetComponent<PlayerMovement>().chargingPS2.Stop();
+            player1.GetComponent<PlayerMovement>().chargingPS1.Clear();
+            player1.GetComponent<PlayerMovement>().chargingPS2.Clear();
+
+
+            player2.GetComponent<PlayerMovement>().chargingPS1.Stop();
+            player2.GetComponent<PlayerMovement>().chargingPS2.Stop();
+            player2.GetComponent<PlayerMovement>().chargingPS1.Clear();
+            player2.GetComponent<PlayerMovement>().chargingPS2.Clear();
+
+            player1.GetComponent<PlayerMovement>().stoneRenderer.sharedMaterial.SetColor("_EmissiveColor", new Color(0.2f, 0.2f, 1f, 1) * 0);
+            player2.GetComponent<PlayerMovement>().stoneRenderer.sharedMaterial.SetColor("_EmissiveColor", new Color(0.2f, 0.2f, 1f, 1) * 0);
+
         }
 
         public void PauseGame()

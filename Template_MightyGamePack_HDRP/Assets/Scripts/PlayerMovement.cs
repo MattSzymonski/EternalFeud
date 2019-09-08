@@ -194,7 +194,9 @@ public class PlayerMovement : MonoBehaviour
        
                     chargingPS1.Stop();
                     chargingPS2.Stop();
-                    pp = false;
+                chargingPS1.Clear();
+                chargingPS2.Clear();
+                pp = false;
                 
 
                 shoutTimer = 0;
@@ -240,8 +242,12 @@ public class PlayerMovement : MonoBehaviour
                     ShoutImpl();
                     readyToShout = false;
                 }
+
+
                 chargingPS1.Stop();
                 chargingPS2.Stop();
+                chargingPS1.Clear();
+                chargingPS2.Clear();
                 pp = false;
                 shoutTimer = 0;
             }
@@ -250,7 +256,7 @@ public class PlayerMovement : MonoBehaviour
  
    private void ShoutImpl()
     {
-        Vector3 boxBounds = transform.localScale * 4.0f;
+        Vector3 boxBounds = transform.localScale * 8.0f;
         MightyGamePack.MightyGameManager.gameManager.audioManager.StopSound(playerNumber == 1 ? "accumulate1" : "accumulate2");
         MightyGamePack.MightyGameManager.gameManager.audioManager.PlaySound(playerNumber == 1 ? "whoosh1" : "whoosh2");
         foreach (var obj in Physics.OverlapBox(shoutArea.transform.position, boxBounds / 2.0f, transform.rotation)) //slightly bigger than current gizmo, when tweaking remember to tweak corresponding gizmo
@@ -263,7 +269,8 @@ public class PlayerMovement : MonoBehaviour
             float shoutDecrease = Mathf.Pow((distanceRoot + 6), -2.0f) * 50.0f;
 
             lookDirection.y += directionAngle;
-            obj.GetComponent<Rigidbody>().AddForce(lookDirection * shoutStrength * shoutDecrease, ForceMode.Impulse);
+           // obj.GetComponent<Rigidbody>().AddForce(lookDirection * shoutStrength * shoutDecrease, ForceMode.Impulse);
+            obj.GetComponent<Rigidbody>().AddForce(lookDirection * shoutStrength * Random.Range(0.9f,1.1f), ForceMode.Impulse);
             obj.GetComponent<Rigidbody>().AddTorque(GenerateRandomRotation() * 0.3f, ForceMode.Impulse);
             if(Random.Range(0, 100) > 90)
             {
@@ -277,7 +284,7 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-            Debug.Log("FUS RO DAH! on: " + obj.name);
+           // Debug.Log("FUS RO DAH! on: " + obj.name);
         }
         particles.Play();
         Camera.main.transform.parent.GetComponent<MightyGamePack.CameraShaker>().ShakeOnce(3.0f, 1f, 1f, 1.25f);
@@ -296,6 +303,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!shoutArea) return;
         Gizmos.matrix = Matrix4x4.TRS(shoutArea.transform.position, transform.rotation, Vector3.one);
-        Gizmos.DrawWireCube(Vector3.zero, transform.localScale * 4);
+        Gizmos.DrawWireCube(Vector3.zero, transform.localScale * 8);
     }
 }

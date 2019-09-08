@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 1642496158543287134}
   - component: {fileID: 4069849116756081093}
   - component: {fileID: 8618651098089076087}
-  m_Layer: 0
+  - component: {fileID: -3143042648624610975}
+  m_Layer: 11
   m_Name: SheepPlayer2
   m_TagString: Sheep
   m_Icon: {fileID: 0}
@@ -134,3 +135,54 @@ MonoBehaviour:
   sheepsUpdateTime: 1
   sheepBackOnFoursTimer: 0
   sheepspBackOnFoursTime: 3
+--- !u!114 &-3143042648624610975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2446420128112361152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9f88ed3f8dcc364e85002b8ef02c682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animatedElement: 2
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.508938
+      value: 0.30849206
+      inSlope: -0.019909307
+      outSlope: -0.019909307
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.4415012
+      outWeight: 0.3910327
+    - serializedVersion: 3
+      time: 0.9958191
+      value: 0.025001526
+      inSlope: -0.5625325
+      outSlope: -0.5625325
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.40596852
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  animationDirectionMultiplier: {x: 0.5, y: 0.8, z: 0.5}
+  evaluationSpeed: 3
+  looping: 0
+  detectCollisions: 0
+  tagsToCollide: []

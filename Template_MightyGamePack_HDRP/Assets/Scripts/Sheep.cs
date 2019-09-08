@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
 
+using MightyGamePack;
+
 public class Sheep : MonoBehaviour
 {
 
@@ -37,40 +39,55 @@ public class Sheep : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         previousVelocity = rb.velocity;
         canPlayThud = true;
+        startBackOnFoursAngle = finalBackOnFoursAngle = GetComponent<Transform>().rotation;
     }
 
 
     private void Update()
     {
-        if(territory == 0) //maybe first one is delayed
+        if(MightyGamePack.MightyGameManager.gameManager.gameState == GameState.Playing)
         {
-            previousVelocity = rb.velocity;
-            canPlayThud = true;
-        }
-        else if(rb.velocity != previousVelocity && canPlayThud)
-        {
-            MightyGamePack.MightyGameManager.gameManager.audioManager.PlayRandomSound("thud1", "thud2", "thud3");
-            canPlayThud = false;
-        }
-        if (sheepUpdateTimer < sheepsUpdateTime) //One second
-        {
-            sheepUpdateTimer += 1 * Time.deltaTime;
-        }
-        else
-        {
-            CheckDrown();
-            CheckTerritory();
-            BackOnFours();
-            sheepUpdateTimer = 0;
-            DamageTerritory();
-            Feed();
+            if (territory == 0) //maybe first one is delayed
+            {
+                previousVelocity = rb.velocity;
+                canPlayThud = true;
+            }
+            else if (rb.velocity != previousVelocity && canPlayThud)
+            {
+                MightyGamePack.MightyGameManager.gameManager.audioManager.PlayRandomSound("thud1", "thud2", "thud3");
+                canPlayThud = false;
+            }
+            if (sheepUpdateTimer < sheepsUpdateTime) //One second
+            {
+                sheepUpdateTimer += 1 * Time.deltaTime;
+            }
+            else
+            {
+                CheckDrown();
+                CheckTerritory();
+                BackOnFours();
+                sheepUpdateTimer = 0;
+                DamageTerritory();
+                Feed();
+
+
+                if (Random.Range(0, 100) < 20)
+                {
+                    GetComponent<TransformJuicer>().StartJuicing();
+                }
+
+
+            }
+
+            if (sheepBackOnFoursTimer < sheepspBackOnFoursTime) //One second
+            {
+                sheepBackOnFoursTimer += 1 * Time.deltaTime;
+                BackOnFoursLerp();
+            }
         }
 
-        if (sheepBackOnFoursTimer < sheepspBackOnFoursTime) //One second
-        {
-            sheepBackOnFoursTimer += 1 * Time.deltaTime;
-            BackOnFoursLerp();
-        }
+
+       
     }
 
     [Button]
@@ -169,7 +186,7 @@ public class Sheep : MonoBehaviour
                 sheepStrength += feedSpeed;
             }          
         }
-        if (sheepStrength > 1) { transform.localScale = Vector3.one + new Vector3(sheepStrength, sheepStrength, sheepStrength) / 2; }
+        if (sheepStrength > 1) { transform.localScale = Vector3.one + new Vector3(sheepStrength, sheepStrength, sheepStrength) / 1.5f; }
     }
 
     void OnDrawGizmos()

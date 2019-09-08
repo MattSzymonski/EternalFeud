@@ -69,7 +69,7 @@ public class IndicatorViewer : MonoBehaviour
         if (!IndicatorPanelPrefab)
         {
             Debug.LogError("No indicator panel prefab set in IndicatorViewer!");
-            UnityEditor.EditorApplication.isPlaying = false;
+            //UnityEditor.EditorApplication.isPlaying = false;
         }
 
         //  If no custom camera is assigned, use main camera
