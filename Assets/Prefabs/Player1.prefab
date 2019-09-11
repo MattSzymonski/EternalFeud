@@ -5176,13 +5176,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerNumber: 1
   stoneRenderer: {fileID: 7718390322043687823}
-  flaotingJuicer: {fileID: 1382182023}
+  floatingJuicer: {fileID: 1349232136}
   chargingPS1: {fileID: 883009984926707989}
   chargingPS2: {fileID: 883009986074125956}
   useMouseAndKeyboardInput: 0
   useGamePadInput: 1
   controllerNumber: 1
-  movementSpeed: 10
+  movementSpeed: 7
   movementSmoothing: 0.05
   mouseTargetLayerName: 
   mouseRayGizmo: 0
@@ -5191,6 +5191,8 @@ MonoBehaviour:
   shoutStrengthUp: 0.4
   shoutTime: 1
   readyToShout: 0
+  applyKnockback: 1
+  knockbackForce: 500
 --- !u!54 &8938210575838136711
 Rigidbody:
   m_ObjectHideFlags: 0

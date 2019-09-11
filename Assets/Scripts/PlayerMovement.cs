@@ -19,18 +19,19 @@ public class PlayerMovement : MonoBehaviour
     public int playerNumber;
 
     public Renderer stoneRenderer;
-    public TransformJuicer flaotingJuicer;
+    public TransformJuicer floatingJuicer;
     public ParticleSystem chargingPS1;
     public ParticleSystem chargingPS2;
 
     Animator anim;
     Vector3 lookDirection;
+    Quaternion previousLookRotation = Quaternion.identity; // when player releases axis, continue capturing old direction
     Vector3 movementDirection;
     bool pp = false;
 
 
     [Header("Movement")]
-    public bool useMouseAndKeyboardInput;
+    public bool useMouseAndKeyboardInput;   
     public bool useGamePadInput;
     [ShowIf("useGamePadInput")] public int controllerNumber;
 
@@ -45,13 +46,14 @@ public class PlayerMovement : MonoBehaviour
     public bool mouseRayGizmo;
     public float drownHeightThreshold = -2;
 
-    [Header("Shoting")]
+    [Header("Shooting")]
     public float shoutStrengthForward;
     public float shoutStrengthUp;
     float shoutTimer;
     public float shoutTime = 2;
     [ReadOnly] public bool readyToShout = false;
-
+    public bool applyKnockback = false;
+    public float knockbackForce = 500.0f;
 
     void Start()
     {
@@ -66,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 shoutPosition = shoutArea.transform.position;
         shoutPosition.z += 2.5f; //for now just twice wide as player
         shoutArea.transform.position = shoutPosition;
-        flaotingJuicer.StartJuicing();
+        floatingJuicer.StartJuicing();
     }
 
     void Update()
@@ -151,12 +153,14 @@ public class PlayerMovement : MonoBehaviour
             lookDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Right Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Right Stick Vertical")).normalized;
             if (lookDirection == Vector3.zero)
             {
-                transform.rotation = Quaternion.identity;
+                transform.rotation = previousLookRotation;
             }
             else
             {
                 transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
+                previousLookRotation = transform.rotation;
             }
+
             DebugExtension.DebugArrow(transform.position, lookDirection * 10, Color.yellow);
         }
     }
@@ -267,12 +271,14 @@ public class PlayerMovement : MonoBehaviour
         Vector3 boxBounds = transform.localScale * 8.0f;
         MightyGamePack.MightyGameManager.gameManager.audioManager.StopSound(playerNumber == 1 ? "accumulate1" : "accumulate2");
         MightyGamePack.MightyGameManager.gameManager.audioManager.PlaySound(playerNumber == 1 ? "whoosh1" : "whoosh2");
+        float totalMassEjected = 0.0f;
         foreach (var obj in Physics.OverlapBox(shoutArea.transform.position, boxBounds / 2.0f, transform.rotation)) //slightly bigger than current gizmo, when tweaking remember to tweak corresponding gizmo
         {     
             if (obj.tag != "Sheep") continue; // for now ignore shouting at non sheep
 
-            obj.GetComponent<Rigidbody>().AddForce(new Vector3(lookDirection.x, shoutStrengthUp * Random.Range(0.8f, 1.3f), lookDirection.z) * shoutStrengthForward * Random.Range(0.8f, 1.2f), ForceMode.Impulse);
-            obj.GetComponent<Rigidbody>().AddTorque(GenerateRandomRotation() * 0.5f, ForceMode.Impulse);
+            var objRb = obj.GetComponent<Rigidbody>();
+            objRb.AddForce(new Vector3(lookDirection.x, shoutStrengthUp * Random.Range(0.8f, 1.3f), lookDirection.z) * shoutStrengthForward * Random.Range(0.8f, 1.2f), ForceMode.Impulse);
+            objRb.AddTorque(GenerateRandomRotation() * 0.5f, ForceMode.Impulse);
             if(Random.Range(0, 100) > 93)
             {
                 MightyGamePack.MightyGameManager.gameManager.audioManager.PlaySound("bleatexclusive");
@@ -282,8 +288,12 @@ public class PlayerMovement : MonoBehaviour
                 MightyGamePack.MightyGameManager.gameManager.audioManager.PlayRandomSound("bleat1", "bleat2", "bleat3", "bleat4");
             }
             MightyGamePack.MightyGameManager.gameManager.particleEffectsManager.SpawnParticleEffect(obj.transform.position, Quaternion.identity, 20, 0.25f, "Hit");
+            totalMassEjected += objRb.mass;
         }
-
+        if(applyKnockback)
+        {
+            GetComponent<Rigidbody>().AddForce(new Vector3(-lookDirection.x, 0.0f, -lookDirection.z) * knockbackForce * totalMassEjected, ForceMode.Acceleration);
+        }
         particles.Play();
         Camera.main.transform.parent.GetComponent<MightyGamePack.CameraShaker>().ShakeOnce(3.0f, 1f, 1f, 1.25f);
         MightyGamePack.MightyGameManager.gameManager.UIManager.TriggerHitBlinkEffect(new Color(1, 1f, 1f, 0.05f));
