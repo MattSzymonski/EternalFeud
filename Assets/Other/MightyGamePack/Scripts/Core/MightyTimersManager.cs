@@ -4,30 +4,6 @@ using UnityEngine;
 using NaughtyAttributes;
 
 
-/*
-Exemplary use - Sniper breath stop:
-
-public MightyGamePack.MightyTimer sniperBreathTimer;;
-
-void Start()
-{
-    sniperBreathTimer = MightyGamePack.MightyGameManager.timersManager.CreateTimer("MyTimer", 1f, 1f, false, true); //Not looping, stopped on start
-}
-
-void HoldBreath() //Triggered on button 
-{
-    sniperBreathTimer.RestartTimer();
-    sniperBreathTimer.PlayTimer();
-}
-
-void Update() 
-{
-    if(!sniperBreathTimer.finished) 
-    {
-        //Do holding breath related stuff
-    }
-}
-*/
 namespace MightyGamePack
 {
     [System.Serializable]
@@ -41,6 +17,16 @@ namespace MightyGamePack
 
         [ReadOnly] public bool stopped;
         [ReadOnly] public bool finished;
+
+        public MightyTimer(string name, float targetTime, float speed, bool loop, bool stopped)
+        {
+            this.name = name;
+            this.targetTime = targetTime;
+            this.speed = speed;
+            this.loop = loop;
+            this.stopped = stopped;
+
+        }
 
         public void UpdateTimer() //Called by MightyTimersManager every frame
         {
@@ -93,7 +79,7 @@ namespace MightyGamePack
 
         public MightyTimer CreateTimer(string name, float targetTime, float speed = 1, bool loop = false, bool stopped = false)
         {
-            MightyTimer newTimer = new MightyTimer();
+            MightyTimer newTimer = new MightyTimer(name, targetTime, speed, loop, stopped);
             timers.Add(newTimer);
             return newTimer;
         }
@@ -103,6 +89,30 @@ namespace MightyGamePack
             timers.Remove(timer);
         }
     }
-
-
 }
+
+
+/*
+Exemplary use - Sniper breath stop:
+
+public MightyGamePack.MightyTimer sniperBreathTimer;;
+
+void Start()
+{
+    sniperBreathTimer = MightyGamePack.MightyGameManager.timersManager.CreateTimer("MyTimer", 1f, 1f, false, true); //Not looping, stopped on start
+}
+
+void HoldBreath() //Triggered on button 
+{
+    sniperBreathTimer.RestartTimer();
+    sniperBreathTimer.PlayTimer();
+}
+
+void Update() 
+{
+    if(!sniperBreathTimer.finished) 
+    {
+        //Do holding breath related stuff
+    }
+}
+*/

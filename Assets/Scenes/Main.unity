@@ -8019,7 +8019,7 @@ MonoBehaviour:
   spawnerPlayer2: {fileID: 5901555446270803236}
   spawnerRadius: 8
   spawnSheeps: 1
-  startHealthPlayer1: 250
+  startHealthPlayer1: 20
   startHealthPlayer2: 250
   healthPlayer1: 1000
   healthPlayer2: 1000
@@ -14791,9 +14791,9 @@ MonoBehaviour:
   moveToAction: 1
   lookAtAction: 1
   movementSmoothness: 0.1
-  length: 27
+  length: 28
   height: 25
-  lookAtSmoothness: 1
+  lookAtSmoothness: 1.5
   lookAtTargetOffset: {x: 0, y: 0, z: -10}
   drawGizmos: 1
 --- !u!1 &1581814749
