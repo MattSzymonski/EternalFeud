@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
 
     Animator anim;
     Vector3 lookDirection;
-    Quaternion previousLookRotation = Quaternion.identity; // when player releases axis, continue capturing old direction
+    Vector3 previousLookDirection; // when player releases axis, continue capturing old direction
     Vector3 movementDirection;
     bool pp = false;
 
@@ -153,12 +153,19 @@ public class PlayerMovement : MonoBehaviour
             lookDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Right Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Right Stick Vertical")).normalized;
             if (lookDirection == Vector3.zero)
             {
-                transform.rotation = previousLookRotation;
+                if(previousLookDirection == Vector3.zero) //for fixing Zero roation quat
+                {
+                    transform.rotation = Quaternion.identity;
+                }
+                else
+                {
+                    transform.rotation = Quaternion.LookRotation(previousLookDirection, Vector3.up);
+                }
             }
             else
             {
                 transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
-                previousLookRotation = transform.rotation;
+                previousLookDirection = lookDirection;
             }
 
             DebugExtension.DebugArrow(transform.position, lookDirection * 10, Color.yellow);
@@ -420,6 +427,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void ShoutImpl()
     {
+        if(lookDirection == Vector3.zero)
+        {
+            lookDirection = previousLookDirection;
+        }
        // Debug.Log(lookDirection);
         Vector3 boxBounds = transform.localScale * 8.0f;
         MightyGamePack.MightyGameManager.gameManager.audioManager.StopSound(playerNumber == 1 ? "accumulate1" : "accumulate2");

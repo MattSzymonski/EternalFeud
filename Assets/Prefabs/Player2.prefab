@@ -525,7 +525,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   animationDirectionMultiplier: {x: 0.3, y: 0.3, z: 0.3}
   evaluationSpeed: 3
-  looping: 1
+  looping: 0
   blockIfActive: 0
   updateStartValues: 0
   detectCollisions: 0
