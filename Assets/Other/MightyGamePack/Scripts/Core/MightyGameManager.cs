@@ -105,25 +105,28 @@ namespace MightyGamePack
         
 
         [Header("References to set")]
-        public GameObject UIGameobject;
-        public MightyUIManager UIManager;
-        public MightyAudioManager audioManager;
-        public MightyParticleEffectsManager particleEffectsManager;
-
+        [HideInInspector] public MightyUIManager UIManager;
+        [HideInInspector] public MightyAudioManager audioManager;
+        [HideInInspector] public MightyParticleEffectsManager particleEffectsManager;
+        [HideInInspector] public MightyTimersManager timersManager;
 
         [Header("----Game----")]
         //public float score;
 
-        public UnityEngine.Experimental.Rendering.HDPipeline.DecalProjectorComponent player1dp1;
-        public UnityEngine.Experimental.Rendering.HDPipeline.DecalProjectorComponent player1dp2;
-        public UnityEngine.Experimental.Rendering.HDPipeline.DecalProjectorComponent player2dp1;
-        public UnityEngine.Experimental.Rendering.HDPipeline.DecalProjectorComponent player2dp2;
+
+        public List<UnityEngine.Experimental.Rendering.HDPipeline.DecalProjectorComponent> player1DestroyedGrass;
+        public List<UnityEngine.Experimental.Rendering.HDPipeline.DecalProjectorComponent> player2DestroyedGrass;
+
+       // public UnityEngine.Experimental.Rendering.HDPipeline.DecalProjectorComponent player1dp1;
+       // public UnityEngine.Experimental.Rendering.HDPipeline.DecalProjectorComponent player1dp2;
+       // public UnityEngine.Experimental.Rendering.HDPipeline.DecalProjectorComponent player2dp1;
+       // public UnityEngine.Experimental.Rendering.HDPipeline.DecalProjectorComponent player2dp2;
 
 
         GameObject player1;
         GameObject player2;
 
-        public CameraMovement cm;
+        public DuelCamera duelCamera;
 
         public GameObject player1Prefab;
         public GameObject player2Prefab;
@@ -156,11 +159,23 @@ namespace MightyGamePack
         public GameObject sheepPrefabPlayer2;
 
         [ReadOnly] public int sheepDrownToSpawn = 0;
-  
+
+        int currentGrassDestroyLevelPlayer1 = 1;
+        float grassDestroyTresholdPlayer1 = 0;
+        int currentGrassDestroyLevelPlayer2= 1;
+        float grassDestroyTresholdPlayer2 = 0;
+
+        public MightyTimer grassFadeTimer1;
+        public MightyTimer grassFadeTimer2;
+        UnityEngine.Experimental.Rendering.HDPipeline.DecalProjectorComponent currentlyFadingInDecalPlayer1;
+        UnityEngine.Experimental.Rendering.HDPipeline.DecalProjectorComponent currentlyFadingInDecalPlayer2;
 
         void Awake()
         {
             gameManager = this;
+
+
+            FindMightyReferences();
 
             gameState = startGameState;
             lastGameState = startGameState;
@@ -170,12 +185,13 @@ namespace MightyGamePack
                 gameState = GameState.Playing;
                 lastGameState = GameState.Playing;
                 UIManager.enabled = false;
-                UIGameobject.SetActive(false);
+                UIManager.transform.gameObject.SetActive(false);
             }
         }
 
         void Start()
         {
+
             if (gameManager != this)
             {
                 Debug.LogError("There can be only one MightyGameManager at a time");
@@ -188,7 +204,7 @@ namespace MightyGamePack
             GameObject playera = Instantiate(player1Prefab, position, Quaternion.identity) as GameObject;
             playera.name = "Player One";
             playera.GetComponent<PlayerMovement>().playerNumber = 1;
-            cm.playerObject1 = playera;
+            duelCamera.player1 = playera;
             player1 = playera;
 
 
@@ -196,8 +212,15 @@ namespace MightyGamePack
             GameObject playerb = Instantiate(player2Prefab, position, Quaternion.identity) as GameObject;
             playerb.name = "Player Two";
             playerb.GetComponent<PlayerMovement>().playerNumber = 2;
-            cm.playerObject2 = playerb;
+            duelCamera.player2 = playerb;
             player2 = playerb;
+
+
+            grassDestroyTresholdPlayer1 = (float)startHealthPlayer1 / (float)player1DestroyedGrass.Count;
+            grassDestroyTresholdPlayer2 = (float)startHealthPlayer2 / (float)player2DestroyedGrass.Count;
+
+            grassFadeTimer1 = timersManager.CreateTimer("GrassFadeInTimer1", 1f, 1, false, true);
+            grassFadeTimer2 = timersManager.CreateTimer("GrassFadeInTimer2", 1f, 1, false, true);
         }
 
 
@@ -213,11 +236,24 @@ namespace MightyGamePack
 
 
 
-                player1dp1.fadeFactor = (1.0f - (float)healthPlayer1 / (float)startHealthPlayer1);
-                player1dp2.fadeFactor = (1.0f - (float)healthPlayer1 / (float)startHealthPlayer1);
+                //player1dp1.fadeFactor = (1.0f - (float)healthPlayer1 / (float)startHealthPlayer1);
+                //player1dp2.fadeFactor = (1.0f - (float)healthPlayer1 / (float)startHealthPlayer1);
 
-                player2dp1.fadeFactor = (1.0f - (float)healthPlayer2 / (float)startHealthPlayer2);
-                player2dp2.fadeFactor = (1.0f - (float)healthPlayer2 / (float)startHealthPlayer2);
+              
+                if (startHealthPlayer1 - (float)healthPlayer1 >= grassDestroyTresholdPlayer1 * currentGrassDestroyLevelPlayer1 && currentGrassDestroyLevelPlayer1 < player1DestroyedGrass.Count)
+                {
+                    DestroyGrass(1);
+                    currentGrassDestroyLevelPlayer1++;
+                }
+
+                if (startHealthPlayer2 - (float)healthPlayer2 >= grassDestroyTresholdPlayer2 * currentGrassDestroyLevelPlayer2 && currentGrassDestroyLevelPlayer2 < player2DestroyedGrass.Count)
+                {
+                    DestroyGrass(2);
+                    currentGrassDestroyLevelPlayer2++;
+                }
+
+              //  player2dp1.fadeFactor = (1.0f - (float)healthPlayer2 / (float)startHealthPlayer2);
+               // player2dp2.fadeFactor = (1.0f - (float)healthPlayer2 / (float)startHealthPlayer2);
 
                 healthPlayer1Slider.fillAmount = ((float)healthPlayer1 / (float)startHealthPlayer1);
                 healthPlayer2Slider.fillAmount = ((float)healthPlayer2 / (float)startHealthPlayer2);
@@ -233,6 +269,7 @@ namespace MightyGamePack
 
             }
 
+
             if (UIManager.spriteCustomCursor)
             {
                 if (Input.GetMouseButtonDown(0))
@@ -240,18 +277,53 @@ namespace MightyGamePack
                     UIManager.SpriteCustomCursorClickPlayAnimation("Click");
                     UIManager.SpriteCustomCursorClickPlayParticleSystem();
                 }
-            }          
+            }
 
-
+            if (currentlyFadingInDecalPlayer1)
+            {
+                currentlyFadingInDecalPlayer1.fadeFactor = grassFadeTimer1.currentTime;
+            }
+            if (currentlyFadingInDecalPlayer2)
+            {
+                currentlyFadingInDecalPlayer2.fadeFactor = grassFadeTimer2.currentTime;
+            }
         }
-
 
 
 
         //---------------------------------------------GAME MECHANICS FUNCTIONS---------------------------------------------
 
-
-        
+        void DestroyGrass(int player)
+        {
+            if (player == 1)
+            {
+                while (true)
+                {
+                    var decal = player1DestroyedGrass[Random.Range(0, player1DestroyedGrass.Count)];
+                    if (decal.fadeFactor == 0)
+                    {
+                        decal.gameObject.transform.rotation = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
+                        currentlyFadingInDecalPlayer1 = decal;       
+                        grassFadeTimer1.RestartTimer();
+                        break;
+                    }
+                }
+            }
+            if (player == 2)
+            {
+                while (true)
+                {
+                    var decal = player2DestroyedGrass[Random.Range(0, player2DestroyedGrass.Count)];
+                    if (decal.fadeFactor == 0)
+                    {
+                        decal.gameObject.transform.rotation = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
+                        currentlyFadingInDecalPlayer2 = decal;
+                        grassFadeTimer2.RestartTimer();
+                        break;
+                    }
+                }
+            }
+        }
 
 
         void SpawnSheeps()
@@ -274,13 +346,8 @@ namespace MightyGamePack
                     SpawnSheep();
                     sheepDrownToSpawn -= 1;
                 }
-                //Invoke("SpawnSheep", Random.Range(0.0f, 0.75f));
                 sheepSpawnTimer = 0;
             }
-
-
-
-
         }
 
         void SpawnSheep()
@@ -323,44 +390,31 @@ namespace MightyGamePack
 
         public void PlayGame()
         {
-            /*
-            Vector2 point = Random.insideUnitCircle * 3;
-            Vector3 position = spawnerPlayer1.transform.position;
-            GameObject player1 = Instantiate(player1, new Vector3(position.x + point.x, position.y, position.z + point.y), Quaternion.identity) as GameObject;
-            newSheep.GetComponent<Sheep>().owner = 2;
-            */
-            //spawnerPlayer1
-            // spawnerPlayer2
+
+
 
         }
 
-        [Button]
         public void GameOver(int winner)
         {
             if (!debugHideUI)
             {
                 UIManager.GameOver();
             
-
-            if(winner == 1)
-            {
-                UIManager.SetInGameScore("RED GOD WINS!");
+                if(winner == 1)
+                {
+                    UIManager.SetInGameScore("CRIMSON STONE WINS!");
+                }
+                if (winner == 2)
+                {
+                    UIManager.SetInGameScore("SAPPHIRE STONE WINS!");
+                }
             }
-            if (winner == 2)
-            {
-                UIManager.SetInGameScore("BLUE GOD WINS!");
-            }
-
-
-
-            }
-
 
             player1.GetComponent<PlayerMovement>().chargingPS1.Stop();
             player1.GetComponent<PlayerMovement>().chargingPS2.Stop();
             player1.GetComponent<PlayerMovement>().chargingPS1.Clear();
             player1.GetComponent<PlayerMovement>().chargingPS2.Clear();
-
 
             player2.GetComponent<PlayerMovement>().chargingPS1.Stop();
             player2.GetComponent<PlayerMovement>().chargingPS2.Stop();
@@ -369,6 +423,18 @@ namespace MightyGamePack
 
             player1.GetComponent<PlayerMovement>().stoneRenderer.sharedMaterial.SetColor("_EmissiveColor", new Color(0.2f, 0.2f, 1f, 1) * 0);
             player2.GetComponent<PlayerMovement>().stoneRenderer.sharedMaterial.SetColor("_EmissiveColor", new Color(0.2f, 0.2f, 1f, 1) * 0);
+
+            if (audioManager.IsSoundPlaying("accumulate1"))
+            {
+                audioManager.StopSound("accumulate1");
+            }
+
+            if (audioManager.IsSoundPlaying("accumulate2"))
+            {
+                audioManager.StopSound("accumulate2");
+            }
+
+            Camera.main.transform.parent.GetComponent<MightyGamePack.CameraShaker>().ShakeOnce(3.0f, 2f, 1f, 3.25f);
 
         }
 
@@ -392,27 +458,44 @@ namespace MightyGamePack
             for (int i = sheeps.Count - 1; i >= 0; --i)
             {
                 if (sheeps[i])
+                {
                     Destroy(sheeps[i].gameObject);
+                }
                 sheeps.RemoveAt(i);
             }
             healthPlayer1 = startHealthPlayer1;
             healthPlayer2 = startHealthPlayer2;
+
+            player1.GetComponent<Collider>().enabled = true;
+            player2.GetComponent<Collider>().enabled = true;
 
             var players = GameObject.FindGameObjectsWithTag("Player");
             foreach(var player in players)
             {
                 if (player.name == "Player One")
                 {
-                    player.transform.position = spawnerPlayer1.transform.position;
+                    Vector2 point = Random.insideUnitCircle * 1;
+                    player.transform.position = spawnerPlayer1.transform.position + MightyGamePack.MightyUtilites.Vec2ToVec3(point);
                     player.transform.rotation = new Quaternion(spawnerPlayer1.transform.rotation.x, spawnerPlayer1.transform.rotation.y, spawnerPlayer1.transform.rotation.z, spawnerPlayer1.transform.rotation.w);
                 } else if (player.name == "Player Two")
                 {
-                    player.transform.position = spawnerPlayer2.transform.position;
+                    Vector2 point = Random.insideUnitCircle * 1;
+                    player.transform.position = spawnerPlayer2.transform.position + MightyGamePack.MightyUtilites.Vec2ToVec3(point);
                     player.transform.rotation = new Quaternion(spawnerPlayer2.transform.rotation.x, spawnerPlayer2.transform.rotation.y, spawnerPlayer2.transform.rotation.z, spawnerPlayer2.transform.rotation.w);
                 }
             }
 
             UIManager.SetInGameScore("");
+
+            foreach(var decal in player1DestroyedGrass)
+            {
+                decal.fadeFactor = 0;
+            }
+
+            foreach (var decal in player2DestroyedGrass)
+            {
+                decal.fadeFactor = 0;
+            }
         }
 
         public void BackToMainMenu()
@@ -437,7 +520,48 @@ namespace MightyGamePack
             gameState = value;
         }
 
+        void FindMightyReferences()
+        {
+            MightyUIManager[] UIManagers = FindObjectsOfType<MightyUIManager>();
+            if (UIManagers.Length > 1)
+            {
+                Debug.LogError("There can be only one MightyUIManager at a time");
+            }
+            else
+            {
+                UIManager = UIManagers[0];
+            }
 
+            MightyAudioManager[] audioManagers = FindObjectsOfType<MightyAudioManager>();
+            if (UIManagers.Length > 1)
+            {
+                Debug.LogError("There can be only one MightyAudioManager at a time");
+            }
+            else
+            {
+                audioManager = audioManagers[0];
+            }
+
+            MightyParticleEffectsManager[] particleEffectsManagers = FindObjectsOfType<MightyParticleEffectsManager>();
+            if (UIManagers.Length > 1)
+            {
+                Debug.LogError("There can be only one MightyParticleEffectsManager at a time");
+            }
+            else
+            {
+                particleEffectsManager = particleEffectsManagers[0];
+            }
+
+            MightyTimersManager[] timersUIManagers = FindObjectsOfType<MightyTimersManager>();
+            if (UIManagers.Length > 1)
+            {
+                Debug.LogError("There can be only one MightyTimersManager at a time");
+            }
+            else
+            {
+                timersManager = timersUIManagers[0];
+            }
+        }
 
 
         void OnDrawGizmos()
@@ -456,10 +580,7 @@ namespace MightyGamePack
             DebugExtension.DrawPoint(spawnerPlayer1.transform.position, Color.red, 3);
             DebugExtension.DrawPoint(spawnerPlayer2.transform.position, Color.blue, 3);
         }
-
-
-
-        }
+    }
 
 
 

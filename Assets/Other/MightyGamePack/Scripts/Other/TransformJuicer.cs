@@ -4,7 +4,9 @@ using UnityEngine;
 
 using NaughtyAttributes;
 
-//Animated parameter parameters should not be changed in playing mode
+//AnimatedElement parameter should not be changed in playing mode
+//Important: 
+
 namespace MightyGamePack
 {
     public enum AnimatedElement
@@ -22,6 +24,8 @@ namespace MightyGamePack
         [Tooltip("Animation curve value will be multiplied by this value (Eg. (0,1,0) will animate only in Y axis")] public Vector3 animationDirectionMultiplier;
         public float evaluationSpeed;
         public bool looping;
+        [Tooltip("Jucer will not play if called while already active")] public bool blockIfActive;
+        [ShowIf("blockIfActive")] [Tooltip("Each call juicer will update start values of position, rotation and scale")] public bool updateStartValues;
 
         bool active;
         float evaluateState;
@@ -35,7 +39,20 @@ namespace MightyGamePack
         Vector3 startRotation;
         Vector3 startScale;
 
+
+
+
         void Start()
+        {
+            SetStartValues();
+        }
+
+        void Update()
+        {
+            Evaluate();
+        }
+
+        void SetStartValues()
         {
             if (animatedElement == AnimatedElement.Position)
             {
@@ -51,11 +68,6 @@ namespace MightyGamePack
             {
                 startScale = transform.localScale;
             }
-        }
-
-        void Update()
-        {
-            Evaluate();
         }
 
         void Evaluate()
@@ -97,6 +109,14 @@ namespace MightyGamePack
 
         public void StartJuicing()
         {
+            if (active && blockIfActive)
+            {
+                return;
+            }
+            if (blockIfActive && updateStartValues)
+            {
+                SetStartValues();
+            }
             active = true;
             evaluateState = 0;
         }

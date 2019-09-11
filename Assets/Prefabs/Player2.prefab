@@ -325,6 +325,8 @@ MonoBehaviour:
   animationDirectionMultiplier: {x: 0, y: 1, z: 0}
   evaluationSpeed: 0.6
   looping: 1
+  blockIfActive: 0
+  updateStartValues: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!1 &5624239517996944123
@@ -441,18 +443,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 1
-  shoutStrength: 28
-  directionAngle: 0.2
-  halfExtentsOfShoutBox: 1
-  movementSmoothing: 0.05
-  chargingPS1: {fileID: 599218387581174264}
-  chargingPS2: {fileID: 599218386313369193}
-  drownHeightThreshold: -1
-  movementSpeed: 10
-  shoutTime: 1
-  readyToShout: 0
   stoneRenderer: {fileID: 6420598394450792693}
   flaotingJuicer: {fileID: 3605051384060620797}
+  chargingPS1: {fileID: 599218387581174264}
+  chargingPS2: {fileID: 599218386313369193}
+  useMouseAndKeyboardInput: 1
+  useGamePadInput: 0
+  controllerNumber: 0
+  movementSpeed: 10
+  movementSmoothing: 0.05
+  mouseTargetLayerName: Ground
+  mouseRayGizmo: 1
+  drownHeightThreshold: -1
+  shoutStrengthForward: 28
+  shoutStrengthUp: 0.4
+  shoutTime: 1
+  readyToShout: 0
 --- !u!54 &5624239517996944125
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -518,6 +524,8 @@ MonoBehaviour:
   animationDirectionMultiplier: {x: 0.3, y: 0.3, z: 0.3}
   evaluationSpeed: 3
   looping: 0
+  blockIfActive: 0
+  updateStartValues: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!1 &5624239518526677639

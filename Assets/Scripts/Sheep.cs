@@ -55,6 +55,7 @@ public class Sheep : MonoBehaviour
             else if (rb.velocity != previousVelocity && canPlayThud)
             {
                 MightyGamePack.MightyGameManager.gameManager.audioManager.PlayRandomSound("thud1", "thud2", "thud3");
+                MightyGamePack.MightyGameManager.gameManager.particleEffectsManager.SpawnParticleEffect(transform.position + new Vector3(0, -0.7f, 0), Quaternion.identity, 4, 0, "SheepGroundHit");
                 canPlayThud = false;
             }
             if (sheepUpdateTimer < sheepsUpdateTime) //One second
@@ -64,19 +65,16 @@ public class Sheep : MonoBehaviour
             else
             {
                 CheckDrown();
-                CheckTerritory();
-                BackOnFours();
-                sheepUpdateTimer = 0;
+                CheckTerritory();  
                 DamageTerritory();
                 Feed();
-
-
-                if (Random.Range(0, 100) < 20)
+             
+                if (Random.Range(0, 100) < 15)
                 {
                     GetComponent<TransformJuicer>().StartJuicing();
                 }
 
-
+                sheepUpdateTimer = 0;
             }
 
             if (sheepBackOnFoursTimer < sheepspBackOnFoursTime) //One second
@@ -120,7 +118,7 @@ public class Sheep : MonoBehaviour
 
     void CheckTerritory()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, colliderDetectRadius);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, colliderDetectRadius + sheepStrength / 3);
 
         for (int i = 0; i < hitColliders.Length; ++i)
         {
@@ -181,21 +179,21 @@ public class Sheep : MonoBehaviour
     {
         if (territory == 3)
         {
-            if(sheepStrength < 3)
+            if(sheepStrength < 5)
             {
                 sheepStrength += feedSpeed;
             }          
         }
-        if (sheepStrength > 1) { transform.localScale = Vector3.one + new Vector3(sheepStrength, sheepStrength, sheepStrength) / 1.5f; }
+        if (sheepStrength > 1) { transform.localScale = Vector3.one + new Vector3(sheepStrength, sheepStrength, sheepStrength) / 4f; }
     }
 
     void OnDrawGizmos()
     {
         if(!hideGizmos)
         {
-            DebugExtension.DrawCircle(transform.position, Vector3.up, Color.yellow, colliderDetectRadius);
-            DebugExtension.DrawCircle(transform.position, Vector3.right, Color.yellow, colliderDetectRadius);
-            DebugExtension.DrawCircle(transform.position, Vector3.forward, Color.yellow, colliderDetectRadius);
+            DebugExtension.DrawCircle(transform.position, Vector3.up, Color.yellow, colliderDetectRadius + sheepStrength / 3);
+            DebugExtension.DrawCircle(transform.position, Vector3.right, Color.yellow, colliderDetectRadius + sheepStrength / 3);
+            DebugExtension.DrawCircle(transform.position, Vector3.forward, Color.yellow, colliderDetectRadius + sheepStrength / 3);
         }
       
     }

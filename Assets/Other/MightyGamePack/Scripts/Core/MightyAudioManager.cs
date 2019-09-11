@@ -52,6 +52,8 @@ namespace MightyGamePack
         [HideInInspector]
         public static MightyAudioManager instance;
 
+        public bool muteSounds;
+        [Space(10)]
         public AudioMixerGroup musicMixerGroup;
         public AudioMixerGroup effectsMixerGroup;
 
@@ -91,7 +93,7 @@ namespace MightyGamePack
                 {
                     sound.source.outputAudioMixerGroup = musicMixerGroup;
                 }
-                if (sound.playOnAwake)
+                if (sound.playOnAwake && !muteSounds)
                 {
                     sound.source.Play();
                 }
@@ -105,14 +107,16 @@ namespace MightyGamePack
 
         public void PlaySound(string soundName)
         {
-
-            Sound sound = Array.Find(sounds, soundFind => soundFind.name == soundName);
-            if (sound == null)
+            if (!muteSounds)
             {
-                Debug.LogWarning("Sound: " + soundName + " not found!");
-                return;
-            }
-            sound.source.Play();
+                Sound sound = Array.Find(sounds, soundFind => soundFind.name == soundName);
+                if (sound == null)
+                {
+                    Debug.LogWarning("Sound: " + soundName + " not found!");
+                    return;
+                }
+                sound.source.Play();
+            }    
         }
 
         public void StopSound(string soundName)
@@ -140,14 +144,17 @@ namespace MightyGamePack
 
         public void PlayRandomSound(params string[] soundNames)
         {
-            string soundName = soundNames[UnityEngine.Random.Range(0, soundNames.Length)];
-            Sound sound = Array.Find(sounds, soundFind => soundFind.name == soundName);
-            if (sound == null)
+            if (!muteSounds)
             {
-                Debug.LogWarning("Randomized sound: " + soundName + " not found!");
-                return;
+                string soundName = soundNames[UnityEngine.Random.Range(0, soundNames.Length)];
+                Sound sound = Array.Find(sounds, soundFind => soundFind.name == soundName);
+                if (sound == null)
+                {
+                    Debug.LogWarning("Randomized sound: " + soundName + " not found!");
+                    return;
+                }
+                sound.source.Play();
             }
-            sound.source.Play();
         }
 
         public void SetMusicMixerVolume(float sliderValue)

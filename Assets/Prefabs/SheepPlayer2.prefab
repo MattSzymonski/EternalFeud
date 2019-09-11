@@ -184,5 +184,7 @@ MonoBehaviour:
   animationDirectionMultiplier: {x: 0.5, y: 0.8, z: 0.5}
   evaluationSpeed: 3
   looping: 0
+  blockIfActive: 1
+  updateStartValues: 1
   detectCollisions: 0
   tagsToCollide: []
