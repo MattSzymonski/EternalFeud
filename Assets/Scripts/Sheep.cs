@@ -67,6 +67,7 @@ public class Sheep : MonoBehaviour
                 CheckDrown();
                 CheckTerritory();  
                 DamageTerritory();
+                BackOnFours();
                 Feed();
              
                 if (Random.Range(0, 100) < 15)
@@ -76,6 +77,8 @@ public class Sheep : MonoBehaviour
 
                 sheepUpdateTimer = 0;
             }
+
+
 
             if (sheepBackOnFoursTimer < sheepspBackOnFoursTime) //One second
             {
