@@ -229,31 +229,9 @@ namespace MightyGamePack
         {
             if (gameState == GameState.Playing)
             {
-                //score += Time.unscaledDeltaTime;
-                //UIManager.SetInGameScore(Mathf.Round(score)); //In seconds
-
                 SpawnSheeps();
-
-
-
-                //player1dp1.fadeFactor = (1.0f - (float)healthPlayer1 / (float)startHealthPlayer1);
-                //player1dp2.fadeFactor = (1.0f - (float)healthPlayer1 / (float)startHealthPlayer1);
-
-              
-                if (startHealthPlayer1 - (float)healthPlayer1 >= grassDestroyTresholdPlayer1 * currentGrassDestroyLevelPlayer1 && currentGrassDestroyLevelPlayer1 < player1DestroyedGrass.Count)
-                {
-                    DestroyGrass(1);
-                    currentGrassDestroyLevelPlayer1++;
-                }
-
-                if (startHealthPlayer2 - (float)healthPlayer2 >= grassDestroyTresholdPlayer2 * currentGrassDestroyLevelPlayer2 && currentGrassDestroyLevelPlayer2 < player2DestroyedGrass.Count)
-                {
-                    DestroyGrass(2);
-                    currentGrassDestroyLevelPlayer2++;
-                }
-
-              //  player2dp1.fadeFactor = (1.0f - (float)healthPlayer2 / (float)startHealthPlayer2);
-               // player2dp2.fadeFactor = (1.0f - (float)healthPlayer2 / (float)startHealthPlayer2);
+       
+                
 
                 healthPlayer1Slider.fillAmount = ((float)healthPlayer1 / (float)startHealthPlayer1);
                 healthPlayer2Slider.fillAmount = ((float)healthPlayer2 / (float)startHealthPlayer2);
@@ -266,9 +244,7 @@ namespace MightyGamePack
                 {
                     GameOver(1);
                 }
-
             }
-
 
             if (UIManager.spriteCustomCursor)
             {
@@ -277,6 +253,18 @@ namespace MightyGamePack
                     UIManager.SpriteCustomCursorClickPlayAnimation("Click");
                     UIManager.SpriteCustomCursorClickPlayParticleSystem();
                 }
+            }
+
+            if (startHealthPlayer1 - (float)healthPlayer1 >= grassDestroyTresholdPlayer1 * currentGrassDestroyLevelPlayer1 && currentGrassDestroyLevelPlayer1 < player1DestroyedGrass.Count)
+            {
+                DestroyGrass(1);
+                currentGrassDestroyLevelPlayer1++;
+            }
+
+            if (startHealthPlayer2 - (float)healthPlayer2 >= grassDestroyTresholdPlayer2 * currentGrassDestroyLevelPlayer2 && currentGrassDestroyLevelPlayer2 < player2DestroyedGrass.Count)
+            {
+                DestroyGrass(2);
+                currentGrassDestroyLevelPlayer2++;
             }
 
             if (currentlyFadingInDecalPlayer1)
@@ -302,9 +290,10 @@ namespace MightyGamePack
                     var decal = player1DestroyedGrass[Random.Range(0, player1DestroyedGrass.Count)];
                     if (decal.fadeFactor == 0)
                     {
-                        decal.gameObject.transform.rotation = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
+                        decal.gameObject.transform.rotation = Quaternion.Euler(90.0f, Random.Range(0.0f, 360.0f), 0.0f);
                         currentlyFadingInDecalPlayer1 = decal;       
                         grassFadeTimer1.RestartTimer();
+                        grassFadeTimer1.PlayTimer();
                         break;
                     }
                 }
@@ -316,9 +305,10 @@ namespace MightyGamePack
                     var decal = player2DestroyedGrass[Random.Range(0, player2DestroyedGrass.Count)];
                     if (decal.fadeFactor == 0)
                     {
-                        decal.gameObject.transform.rotation = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
+                        decal.gameObject.transform.rotation = Quaternion.Euler(0.0f, Random.Range(90.0f, 360.0f), 0.0f);
                         currentlyFadingInDecalPlayer2 = decal;
                         grassFadeTimer2.RestartTimer();
+                        grassFadeTimer1.PlayTimer();
                         break;
                     }
                 }
@@ -403,10 +393,12 @@ namespace MightyGamePack
             
                 if(winner == 1)
                 {
+
                     UIManager.SetInGameScore("CRIMSON STONE WINS!");
                 }
                 if (winner == 2)
                 {
+              
                     UIManager.SetInGameScore("SAPPHIRE STONE WINS!");
                 }
             }
