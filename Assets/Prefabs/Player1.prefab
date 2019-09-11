@@ -5176,7 +5176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerNumber: 1
   stoneRenderer: {fileID: 7718390322043687823}
-  floatingJuicer: {fileID: 1349232136}
+  floatingJuicer: {fileID: 1382182023}
   chargingPS1: {fileID: 883009984926707989}
   chargingPS2: {fileID: 883009986074125956}
   useMouseAndKeyboardInput: 0
