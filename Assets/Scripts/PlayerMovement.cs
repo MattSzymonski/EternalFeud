@@ -184,10 +184,16 @@ public class PlayerMovement : MonoBehaviour
                     // chargingPS2.Play();
                     pp = true;
                 }
-                if (!MightyGamePack.MightyGameManager.gameManager.audioManager.IsSoundPlaying("accumulate2"))
+
+                if (playerNumber == 1 && !MightyGamePack.MightyGameManager.gameManager.audioManager.IsSoundPlaying("accumulate1"))
+                {
+                    MightyGamePack.MightyGameManager.gameManager.audioManager.PlaySound("accumulate1");
+                }
+                if (playerNumber == 2 && !MightyGamePack.MightyGameManager.gameManager.audioManager.IsSoundPlaying("accumulate2"))
                 {
                     MightyGamePack.MightyGameManager.gameManager.audioManager.PlaySound("accumulate2");
                 }
+
                 if (shoutTimer < shoutTime)
                 {
                     shoutTimer += 1 * Time.deltaTime;
@@ -206,6 +212,15 @@ public class PlayerMovement : MonoBehaviour
 
             if (!Input.GetButton("Space"))
             {
+                if (playerNumber == 1)
+                {
+                    MightyGamePack.MightyGameManager.gameManager.audioManager.StopSound("accumulate1");
+                }
+                if (playerNumber == 2)
+                {
+                    MightyGamePack.MightyGameManager.gameManager.audioManager.StopSound("accumulate2");
+                }
+
                 if (readyToShout)
                 {
                     ShoutImpl();
@@ -233,10 +248,15 @@ public class PlayerMovement : MonoBehaviour
                     pp = true;
                 }
 
-                if (!MightyGamePack.MightyGameManager.gameManager.audioManager.IsSoundPlaying("accumulate1"))
+                if (playerNumber == 1 && !MightyGamePack.MightyGameManager.gameManager.audioManager.IsSoundPlaying("accumulate1"))
                 {
                     MightyGamePack.MightyGameManager.gameManager.audioManager.PlaySound("accumulate1");
                 }
+                if (playerNumber == 2 && !MightyGamePack.MightyGameManager.gameManager.audioManager.IsSoundPlaying("accumulate2"))
+                {
+                    MightyGamePack.MightyGameManager.gameManager.audioManager.PlaySound("accumulate2");
+                }
+
                 if (shoutTimer < shoutTime)
                 {
                     shoutTimer += 1 * Time.deltaTime;
@@ -255,6 +275,15 @@ public class PlayerMovement : MonoBehaviour
 
             if (Input.GetAxis("Controller" + controllerNumber + " Triggers") == 0)
             {
+                if (playerNumber == 1)
+                {
+                    MightyGamePack.MightyGameManager.gameManager.audioManager.StopSound("accumulate1");
+                }
+                if (playerNumber == 2)
+                {
+                    MightyGamePack.MightyGameManager.gameManager.audioManager.StopSound("accumulate2");
+                }
+
                 if (readyToShout)
                 {
                     ShoutImpl();

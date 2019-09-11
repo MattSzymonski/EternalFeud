@@ -290,7 +290,7 @@ namespace MightyGamePack
                     var decal = player1DestroyedGrass[Random.Range(0, player1DestroyedGrass.Count)];
                     if (decal.fadeFactor == 0)
                     {
-                        decal.gameObject.transform.rotation = Quaternion.Euler(90.0f, Random.Range(0.0f, 360.0f), 0.0f);
+                        decal.gameObject.transform.rotation = Quaternion.Euler(90.0f, Random.Range(90.0f, 360.0f), 0.0f);
                         currentlyFadingInDecalPlayer1 = decal;       
                         grassFadeTimer1.RestartTimer();
                         grassFadeTimer1.PlayTimer();
@@ -308,7 +308,7 @@ namespace MightyGamePack
                         decal.gameObject.transform.rotation = Quaternion.Euler(0.0f, Random.Range(90.0f, 360.0f), 0.0f);
                         currentlyFadingInDecalPlayer2 = decal;
                         grassFadeTimer2.RestartTimer();
-                        grassFadeTimer1.PlayTimer();
+                        grassFadeTimer2.PlayTimer();
                         break;
                     }
                 }

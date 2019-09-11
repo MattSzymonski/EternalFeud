@@ -420,10 +420,29 @@ namespace MightyGamePack
         [Button]
         public void ChangeFont()
         {
+            List<GameObject> disabledGameObjects = new List<GameObject>();
+
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                GameObject obj = transform.GetChild(0).gameObject;
+                if (!obj.activeSelf)
+                {
+                    disabledGameObjects.Add(obj);
+                    obj.SetActive(true);
+                }   
+            }
+
             foreach (Text text in UICanvas.GetComponentsInChildren<Text>()) 
             {
                 text.font = fontToSet;
             }
+
+            foreach (GameObject obj in disabledGameObjects)
+            {
+                obj.SetActive(false);
+            }
+
+            disabledGameObjects.Clear();
         }
 
         [Button]

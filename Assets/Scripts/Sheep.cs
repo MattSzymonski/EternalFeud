@@ -82,10 +82,7 @@ public class Sheep : MonoBehaviour
                 sheepBackOnFoursTimer += 1 * Time.deltaTime;
                 BackOnFoursLerp();
             }
-        }
-
-
-       
+        } 
     }
 
     [Button]
