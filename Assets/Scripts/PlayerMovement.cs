@@ -311,7 +311,7 @@ public class PlayerMovement : MonoBehaviour
        // Debug.Log(lookDirection);
         Vector3 boxBounds = transform.localScale * 8.0f;
         MightyGamePack.MightyGameManager.gameManager.audioManager.StopSound(playerNumber == 1 ? "accumulate1" : "accumulate2");
-        MightyGamePack.MightyGameManager.gameManager.audioManager.PlaySound(playerNumber == 1 ? "whoosh1" : "whoosh2");
+        MightyGamePack.MightyGameManager.gameManager.audioManager.PlaySound(playerNumber == 1 ? "whoosh1" : "whoosh1");
         float totalMassEjected = 0.0f;
         foreach (var obj in Physics.OverlapBox(shoutArea.transform.position, boxBounds / 2.0f, transform.rotation)) //slightly bigger than current gizmo, when tweaking remember to tweak corresponding gizmo
         {     

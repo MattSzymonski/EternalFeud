@@ -244,6 +244,28 @@ namespace MightyGamePack
                 {
                     GameOver(1);
                 }
+
+                if (startHealthPlayer1 - (float)healthPlayer1 >= grassDestroyTresholdPlayer1 * currentGrassDestroyLevelPlayer1 && currentGrassDestroyLevelPlayer1 < player1DestroyedGrass.Count)
+                {
+                    DestroyGrass(1);
+                    currentGrassDestroyLevelPlayer1++;
+                }
+
+                if (startHealthPlayer2 - (float)healthPlayer2 >= grassDestroyTresholdPlayer2 * currentGrassDestroyLevelPlayer2 && currentGrassDestroyLevelPlayer2 < player2DestroyedGrass.Count)
+                {
+                    DestroyGrass(2);
+                    currentGrassDestroyLevelPlayer2++;
+                }
+
+                if (currentlyFadingInDecalPlayer1)
+                {
+                    currentlyFadingInDecalPlayer1.fadeFactor = grassFadeTimer1.currentTime;
+                }
+                if (currentlyFadingInDecalPlayer2)
+                {
+                    currentlyFadingInDecalPlayer2.fadeFactor = grassFadeTimer2.currentTime;
+                }
+
             }
 
             if (UIManager.spriteCustomCursor)
@@ -253,27 +275,6 @@ namespace MightyGamePack
                     UIManager.SpriteCustomCursorClickPlayAnimation("Click");
                     UIManager.SpriteCustomCursorClickPlayParticleSystem();
                 }
-            }
-
-            if (startHealthPlayer1 - (float)healthPlayer1 >= grassDestroyTresholdPlayer1 * currentGrassDestroyLevelPlayer1 && currentGrassDestroyLevelPlayer1 < player1DestroyedGrass.Count)
-            {
-                DestroyGrass(1);
-                currentGrassDestroyLevelPlayer1++;
-            }
-
-            if (startHealthPlayer2 - (float)healthPlayer2 >= grassDestroyTresholdPlayer2 * currentGrassDestroyLevelPlayer2 && currentGrassDestroyLevelPlayer2 < player2DestroyedGrass.Count)
-            {
-                DestroyGrass(2);
-                currentGrassDestroyLevelPlayer2++;
-            }
-
-            if (currentlyFadingInDecalPlayer1)
-            {
-                currentlyFadingInDecalPlayer1.fadeFactor = grassFadeTimer1.currentTime;
-            }
-            if (currentlyFadingInDecalPlayer2)
-            {
-                currentlyFadingInDecalPlayer2.fadeFactor = grassFadeTimer2.currentTime;
             }
         }
 
@@ -290,7 +291,7 @@ namespace MightyGamePack
                     var decal = player1DestroyedGrass[Random.Range(0, player1DestroyedGrass.Count)];
                     if (decal.fadeFactor == 0)
                     {
-                        decal.gameObject.transform.rotation = Quaternion.Euler(90.0f, Random.Range(90.0f, 360.0f), 0.0f);
+                        decal.gameObject.transform.rotation = Quaternion.Euler(90.0f, Random.Range(0.0f, 360.0f), 0.0f);
                         currentlyFadingInDecalPlayer1 = decal;       
                         grassFadeTimer1.RestartTimer();
                         grassFadeTimer1.PlayTimer();
@@ -305,7 +306,7 @@ namespace MightyGamePack
                     var decal = player2DestroyedGrass[Random.Range(0, player2DestroyedGrass.Count)];
                     if (decal.fadeFactor == 0)
                     {
-                        decal.gameObject.transform.rotation = Quaternion.Euler(0.0f, Random.Range(90.0f, 360.0f), 0.0f);
+                        decal.gameObject.transform.rotation = Quaternion.Euler(90.0f, Random.Range(0.0f, 360.0f), 0.0f);
                         currentlyFadingInDecalPlayer2 = decal;
                         grassFadeTimer2.RestartTimer();
                         grassFadeTimer2.PlayTimer();
@@ -488,6 +489,13 @@ namespace MightyGamePack
             {
                 decal.fadeFactor = 0;
             }
+
+            grassFadeTimer1.StopTimer();
+            grassFadeTimer1.RestartTimer();
+            grassFadeTimer2.StopTimer();
+            grassFadeTimer2.RestartTimer();
+            currentGrassDestroyLevelPlayer1 = 1;
+            currentGrassDestroyLevelPlayer2 = 1;
         }
 
         public void BackToMainMenu()
