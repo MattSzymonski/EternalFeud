@@ -8019,7 +8019,7 @@ MonoBehaviour:
   spawnerPlayer2: {fileID: 5901555446270803236}
   spawnerRadius: 8
   spawnSheeps: 1
-  startHealthPlayer1: 100
+  startHealthPlayer1: 250
   startHealthPlayer2: 250
   healthPlayer1: 1000
   healthPlayer2: 1000
