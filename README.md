@@ -1,4 +1,4 @@
-Game made during Warsaw Film School Game Jam 2019
+Game made during Warsaw Film School Game Jam 2019  
 Honorable mention award recipient
 
 Two ancient stones, each guarding grass on its piece of land from the horde of sheeps.  
